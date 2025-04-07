@@ -15,9 +15,9 @@ struct DemoMafiaTests {
     }
     @Test func openApp(){
         var app = AppStateManager()
-        #expect(app.state == AppState.menu)
+        #expect(app.state == "menu")
         app.makeGame()
-        #expect(app.state == .game)
+        #expect(app.state == "game")
     }
 
 }

@@ -25,12 +25,13 @@ enum PlayerRole: String, Codable {
 }
 
 
+
 class MafiaGame: ObservableObject {
     @Published var state: GameState = .setup
     @Published var day: TurnCycle = .day
     @Published var players: [Player] = []
     @Published var gameSetup = GameSetup()
-    @Published var news = "Attention citizens, this is the police. We have recieved intel that leads us to suspect there may be a mafia among your folk. As we do not have the man power to help you, you are on your own."
+    @Published var news = "Attention citizens, this is the police. Intel leads us to suspect there may be a mafia among your folk. However, we do not have the manpower to help, you are on your own."
     func openGame() {
         state = .setup
     }
