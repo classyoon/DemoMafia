@@ -12,29 +12,10 @@ struct Player : Identifiable {
     var id : UUID = UUID()
     var role : PlayerRole = .villager
     var isAlive : Bool = true
-    func nightAction(targetID : UUID) -> NightAction {
-        guard isAlive else {
-            print("Place holder action for ghosts")
-            return .visit(UUID())
-        }
-        return .visit(UUID())
-    }
-}
-
-class Game {
-    var players : [Player] = []
-    var currentPlayer : Player?
-    func kill(targetID : UUID){
-    
-    }
-}
-struct Vote {
-    
 }
 enum NightAction {
     case kill(UUID), save(UUID), visit(UUID), investigate(UUID)
 }
-
 
 enum PlayerRole: String, Codable {
     case mafia
@@ -42,6 +23,7 @@ enum PlayerRole: String, Codable {
     case villager
     case doctor
 }
+
 
 class MafiaGame: ObservableObject {
     @Published var state: GameState = .setup
