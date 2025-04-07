@@ -13,7 +13,6 @@ func loadFlavorText() -> FlavorText? {
         print("⚠️ Failed to load flavor text.")
         return nil
     }
-    print("Printed")
     return flavorText
 }
 

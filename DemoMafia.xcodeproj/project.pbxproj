@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		CA3574E52DA41C1700DC0DF4 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = CA3574E42DA41C1700DC0DF4 /* .gitignore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		CA1CA5542DA1B73A00FDC172 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,7 @@
 		CA1CA5452DA1B73800FDC172 /* DemoMafia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemoMafia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA1CA5532DA1B73A00FDC172 /* DemoMafiaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoMafiaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA1CA55D2DA1B73A00FDC172 /* DemoMafiaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoMafiaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA3574E42DA41C1700DC0DF4 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +80,7 @@
 		CA1CA53C2DA1B73800FDC172 = {
 			isa = PBXGroup;
 			children = (
+				CA3574E42DA41C1700DC0DF4 /* .gitignore */,
 				CA1CA5472DA1B73800FDC172 /* DemoMafia */,
 				CA1CA5562DA1B73A00FDC172 /* DemoMafiaTests */,
 				CA1CA5602DA1B73A00FDC172 /* DemoMafiaUITests */,
@@ -212,6 +218,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA3574E52DA41C1700DC0DF4 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
