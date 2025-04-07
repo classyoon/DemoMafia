@@ -13,34 +13,31 @@ struct Player : Identifiable {
     var id : UUID = UUID()
     var role : PlayerRole = .villager
     var isAlive : Bool = true
-    var action : NightAction = .nothing
-    var target : UUID?
-    var status : PlayerStatus = .done
-    var needTurn : Bool {
-        if isAlive && target == nil {
-            return true
-        }
-        return false
-    }
-    mutating func setTarget(_ newtarget: UUID) {
-        target = newtarget
-    }
-    mutating func resetNightAction() {
-        target = nil
-        status = .notchosen
-    }
 }
 enum NightAction {
-    case kill(UUID), save(UUID), visit(UUID), investigate(UUID), nothing
+    case kill, save, investigate, nothing
+    
 }
+
 enum PlayerRole: String, Codable {
     case mafia
     case detective
     case villager
     case doctor
+    
+    func defaultNightAction() -> NightAction {
+            switch self {
+            case .mafia: return .kill
+            case .doctor: return .save
+            case .detective: return .investigate
+            case .villager: return .nothing
+            }
+        }
 }
-enum PlayerStatus {
-    case notchosen, done, choosing
+struct ChosenNightAction {
+    let actorID: UUID
+    let targetID: UUID?
+    let actionType: NightAction
 }
 class MafiaGame: ObservableObject {
     @Published var state: GameState = .setup
@@ -49,7 +46,7 @@ class MafiaGame: ObservableObject {
     @Published var gameSetup = GameSetup()
     @Published var news = "Attention citizens, this is the police. Intel leads us to suspect there may be a mafia among your folk. However, we do not have the manpower to help, you are on your own."
     @Published var lastnight : NightResult = .gamestarted
-    @Published var nightregistry : [NightAction] = []
+    var nightActions : [ChosenNightAction] = []
     @Published var dayNum : Int = 1
     @Published var dayPhase : DayTime = .news
     var premium = true
@@ -71,6 +68,8 @@ class MafiaGame: ObservableObject {
         }
     }
     func startNight(){
+        nightActions = []
+        lastnight = .nothing
         gamephase = .night
     }
     func startMorning(){
@@ -82,6 +81,50 @@ class MafiaGame: ObservableObject {
         }
         updateNews()
     }
+    func chooseNightAction(for playerID: UUID, targetID: UUID?) {
+           // Find that player's role
+           guard let player = players.first(where: { $0.id == playerID }),
+                 player.isAlive else {
+               return // invalid or dead
+           }
+           
+           let actionType = player.role.defaultNightAction()
+           let chosen = ChosenNightAction(actorID: playerID, targetID: targetID, actionType: actionType)
+           
+           // Remove old action from that player if it exists, then append
+           nightActions.removeAll { $0.actorID == playerID }
+           nightActions.append(chosen)
+       }
+    
+    func resolveNight() {
+          // Example resolution logic:
+          
+          // 1) Identify all 'save' actions.
+          let saves = nightActions.filter { $0.actionType == .save }
+                                  .compactMap { $0.targetID }
+          
+          // 2) Identify all 'kill' actions.
+          let kills = nightActions.filter { $0.actionType == .kill }
+          
+          // 3) For each kill, see if the target was saved.
+          for killAction in kills {
+              guard let targetID = killAction.targetID else { continue }
+              // If the target is not in the saved list, kill them
+              if !saves.contains(targetID) {
+                  // Mark that player as dead
+                  if let idx = players.firstIndex(where: { $0.id == targetID }) {
+                      players[idx].isAlive = false
+                      lastnight = .somebodiedied
+                  }
+              }
+          }
+          
+          // 4) Investigations, etc.
+          
+          // 5) Move on to day
+          startMorning()
+      }
+      
     func updateNews(){
         switch lastnight {
         case .nothing:

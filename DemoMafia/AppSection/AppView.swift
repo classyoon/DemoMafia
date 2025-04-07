@@ -11,13 +11,11 @@ struct AppView : View {
     var body: some View {
         switch vm.state {
         case .menu:
-            Button("PLAY"){
-                vm.state = AppState.game(MafiaGame())
-            }
+            MenuView(vm: vm)
         case .findGame:
-            Text("Find game - Set up a game or find a game?")
+            Text("Find game - Set up a game or find a game?")//When online
         case .settings:
-            Text("User Settings")
+            Text("User Settings")//When applicable
         case .game(let mafiaGame):
             MafiaGameView(vm: mafiaGame)
         }
@@ -30,16 +28,26 @@ struct AppView : View {
 
 class AppStateManager : ObservableObject {
     @Published var state : AppState = .menu
+    @Published var tip : String = ""
+    @Published var fun : String = ""
+    
     func makeGame(){
         let newGame = MafiaGame()
         newGame.openGame()
         state = .game(newGame)
     }
     func enterSettings(){
-        
+     //I can't think of settings yet.
     }
     init(state: AppState = .menu) {
         self.state = state
+        setText()
+    }
+    func setText(){
+        if let flavor = loadAppText() {
+            tip = flavor.tips.randomElement() ?? tip
+            fun = flavor.fun.randomElement() ?? fun
+        }
     }
 }
 

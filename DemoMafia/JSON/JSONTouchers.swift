@@ -20,3 +20,18 @@ struct FlavorText: Codable {
     let nothingHappen : [String]
     let murder : [String]
 }
+func loadAppText() -> AppText? {
+    guard let url = Bundle.main.url(forResource: "AppText", withExtension: "json"),
+          let data = try? Data(contentsOf: url),
+          let appText = try? JSONDecoder().decode(AppText.self, from: data) else {
+        print("⚠️ Failed to load app text.")
+        return nil
+    }
+    return appText
+}
+struct AppText: Codable {
+    let fun: [String]
+    let tips : [String]
+    let otherprojects : [String]
+    let familyprojects : [String]
+}

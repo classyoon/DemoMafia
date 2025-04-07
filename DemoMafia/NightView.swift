@@ -14,7 +14,7 @@ struct NightView: View {
             Text("NIGHT")
             PeopleListView(people: game.players)
             Button("Move to Day"){
-                game.startMorning()
+                game.resolveNight()
             }
         }
     }
