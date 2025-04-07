@@ -7,35 +7,23 @@
 
 import Foundation
 
-class Player {
+struct Player : Identifiable {
     var name : String = ""
     var id : UUID = UUID()
-    var role : PlayerRole = .civilian
+    var role : PlayerRole = .villager
     var isAlive : Bool = true
     func nightAction(targetID : UUID) -> NightAction {
         guard isAlive else {
             print("Place holder action for ghosts")
+            return .visit(UUID())
         }
-        switch role {
-        case .civilian:
-            NightAction.visit(targetID)
-        case .mafia :
-            NightAction.kill(targetID)
-        case .detective:
-            NightAction.investigate(targetID)
-        }
+        return .visit(UUID())
     }
 }
 
 class Game {
     var players : [Player] = []
     var currentPlayer : Player?
-    func test() {
-        guard let currentPlayer else { return }
-        var target = UUID()
-        guard players.contains(where: { $0.id == target }) else { return }
-        currentPlayer.nightAction(targetID: target)
-    }
     func kill(targetID : UUID){
     
     }
@@ -51,5 +39,58 @@ enum NightAction {
 enum PlayerRole: String, Codable {
     case mafia
     case detective
-    case civilian
+    case villager
+    case doctor
+}
+
+class MafiaGame: ObservableObject {
+    @Published var state: GameState = .setup
+    @Published var day: TurnCycle = .day
+    @Published var players: [Player] = []
+    @Published var gameSetup = GameSetup()
+    
+    func openGame() {
+        state = .setup
+    }
+    
+    func assignRoles() {
+        guard gameSetup.isValid(for: players.count) else {
+            // Handle invalid setup - too many special roles for player count
+            return
+        }
+        
+        let roles = gameSetup.generateRoles(for: players.count)
+        
+        // Assign each role to a player
+        for i in 0..<players.count {
+            players[i].role = roles[i]
+        }
+    }
+    
+    func startGame() {
+        if players.count < 4 {
+            // Show error - not enough players
+        } else {
+            assignRoles()
+            state = .playing
+            day = .day
+        }
+    }
+    
+    func endGame() {
+        state = .ended
+    }
+}
+
+enum GameState : String, Codable {
+    case setup
+    case playing
+    case ended
+}
+enum TurnCycle{
+    case day, night
+}
+
+enum AppState {
+    case menu, findGame, settings, game(MafiaGame)
 }
