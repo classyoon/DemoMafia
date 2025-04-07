@@ -19,7 +19,7 @@ struct AppView : View {
         case .settings:
             Text("User Settings")
         case .game(let mafiaGame):
-            GameSetupView(game: mafiaGame)
+            MafiaGameView(vm: mafiaGame)
         }
     }
 }

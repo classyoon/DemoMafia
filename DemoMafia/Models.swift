@@ -6,35 +6,53 @@
 //
 
 import Foundation
-struct FlavorText: Codable {
-    let gameStart: [String]
-}
 
+/*I'm getting a bit lost on player.*/
 struct Player : Identifiable {
     var name : String = ""
     var id : UUID = UUID()
     var role : PlayerRole = .villager
     var isAlive : Bool = true
+    var action : NightAction = .nothing
+    var target : UUID?
+    var status : PlayerStatus = .done
+    var needTurn : Bool {
+        if isAlive && target == nil {
+            return true
+        }
+        return false
+    }
+    mutating func setTarget(_ newtarget: UUID) {
+        target = newtarget
+    }
+    mutating func resetNightAction() {
+        target = nil
+        status = .notchosen
+    }
 }
 enum NightAction {
-    case kill(UUID), save(UUID), visit(UUID), investigate(UUID)
+    case kill(UUID), save(UUID), visit(UUID), investigate(UUID), nothing
 }
-
 enum PlayerRole: String, Codable {
     case mafia
     case detective
     case villager
     case doctor
 }
-
-
-
+enum PlayerStatus {
+    case notchosen, done, choosing
+}
 class MafiaGame: ObservableObject {
     @Published var state: GameState = .setup
-    @Published var day: TurnCycle = .day
+    @Published var gamephase: TurnCycle = .day
     @Published var players: [Player] = []
     @Published var gameSetup = GameSetup()
     @Published var news = "Attention citizens, this is the police. Intel leads us to suspect there may be a mafia among your folk. However, we do not have the manpower to help, you are on your own."
+    @Published var lastnight : NightResult = .gamestarted
+    @Published var nightregistry : [NightAction] = []
+    @Published var dayNum : Int = 1
+    @Published var dayPhase : DayTime = .news
+    var premium = true
     func openGame() {
         state = .setup
     }
@@ -53,14 +71,38 @@ class MafiaGame: ObservableObject {
         }
     }
     func startNight(){
-        day = .night
+        gamephase = .night
     }
     func startMorning(){
-        day = .day
-        news = updateNews()
+        if !premium {
+            gamephase = .intermission("A message from our sponsor")
+        }else{
+            gamephase = .day
+            
+        }
+        updateNews()
     }
-    func updateNews()->String{
-        return "Nothing happened tonight"
+    func updateNews(){
+        switch lastnight {
+        case .nothing:
+            if let flavor = loadFlavorText() {
+                news = flavor.nothingHappen.randomElement() ?? news
+            }else{
+                news = "Nothing happened tonight"
+            }
+        case .somebodiedied:
+            if let flavor = loadFlavorText() {
+                news = flavor.murder.randomElement() ?? news
+            }else {
+                news = "Death occurred tonight"
+            }
+        case .gamestarted:
+            if let flavor = loadFlavorText() {
+                news = flavor.gameStart.randomElement() ?? news
+            }else {
+                news = "The game begins"
+            }
+        }
     }
     func startGame() {
         if players.count < 4 {
@@ -69,10 +111,9 @@ class MafiaGame: ObservableObject {
           
             assignRoles()
             state = .playing
-            day = .day
-            if let flavor = loadFlavorText() {
-                news = flavor.gameStart.randomElement() ?? news
-            }
+            gamephase = .day
+            lastnight = .gamestarted
+            updateNews()
         }
     }
     
@@ -81,31 +122,16 @@ class MafiaGame: ObservableObject {
     }
 }
 
-enum GameState : String, Codable {
-    case setup
-    case playing
-    case ended
-}
+
 enum TurnCycle{
-    case day, night
+    case day, intermission(String), night
 }
 enum DayDecision {
     case accuse(UUID), vote(UUID), abstain
 }
-enum DayTime {
-    case special, news(Bool), discussion, accusations, voting, results
+enum NightResult {
+    case nothing, somebodiedied, gamestarted
 }
-
-/// Hypothetically this class would come into handy if we start having a bunch of complex rules that can create interlocking actions.
-/// Like say we have vigilante role, who can fire a shot to kill, but if the person they kill isn't a mafia, they take both out.
-/// We have to say somewhere that if a vigilante shoots the mafia at night, and the mafia was going to kill someone, whether
-/// the vigilante kills the mafia before the mafia kills their victim. Maybe we could do that in enums?
-class NightMediator {//Hypothetically.
-    var events : [UUID : NightAction] = [:]
-    func calculate(){
-        /*
-         This I imagine would be where we do all the logic for if like at the very least, if the mafia
-         tries to kill someone but the doctor saves that person.
-         */
-    }
+enum DayTime {
+    case special, news, discussion, accusations, voting, results
 }

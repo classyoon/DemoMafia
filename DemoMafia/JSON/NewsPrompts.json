@@ -5,5 +5,25 @@
     "A message from law enforcement: Trust has been broken. Among you hides a shadow. Proceed with caution.",
     "Good morning, town. All we can say is… trust no one.",
     "We leave you to your own devices, citizens. The Mafia is among you, and only your wits can save you."
+  ],
+  "nothingHappen": [
+    "The night was quiet.",
+    "Nothing significant happened.",
+    "Nobody died",
+    "Nothing changed"
+  ],
+  "murder": [
+      "Someone died tonight...",
+      "Blood was shed",
+      "They had it coming",
+      "Death had its share",
+      "Murder!!!"
+  ],
+  "admessage" : [
+      "Take a break",
+      "Here a message from our sponsor",
+      "Go ahead and use the bathroom",
+      "Check out",
+      "These ads make this game free"
   ]
 }

@@ -15,4 +15,8 @@ func loadFlavorText() -> FlavorText? {
     }
     return flavorText
 }
-
+struct FlavorText: Codable {
+    let gameStart: [String]
+    let nothingHappen : [String]
+    let murder : [String]
+}

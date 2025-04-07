@@ -6,7 +6,11 @@
 //
 
 import SwiftUI
-
+enum GameState : String, Codable {
+    case setup
+    case playing
+    case ended
+}
 struct MafiaGameView: View {
     @ObservedObject var vm : MafiaGame
     var body: some View {

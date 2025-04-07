@@ -10,12 +10,15 @@ import SwiftUI
 struct PlayingView: View {
     @ObservedObject var game: MafiaGame
     var body: some View {
-        VStack{
-            Text("BEGIN")
-            Text(game.news)
-            Button("Reroll"){
-                game.startGame()
+        switch game.gamephase {
+        case .day:
+            DayView(game: game)
+        case .intermission(let string):
+            Button("InsertADHere"){
+                
             }
+        case .night:
+            NightView(game: game)
         }
     }
 }
