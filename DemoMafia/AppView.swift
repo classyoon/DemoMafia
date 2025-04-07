@@ -11,13 +11,15 @@ struct AppView : View {
     var body: some View {
         switch vm.state {
         case .menu:
-            Text("Menu")
+            Button("PLAY"){
+                vm.state = AppState.game(MafiaGame())
+            }
         case .findGame:
             Text("Find game - Set up a game or find a game?")
         case .settings:
             Text("User Settings")
         case .game(let mafiaGame):
-            Text("Game \(mafiaGame.$state)")
+            GameSetupView(game: mafiaGame)
         }
     }
 }
@@ -41,6 +43,6 @@ class AppStateManager : ObservableObject {
     }
 }
 
-enum AppState : String {
+enum AppState {
     case menu, findGame, settings, game(MafiaGame)
 }

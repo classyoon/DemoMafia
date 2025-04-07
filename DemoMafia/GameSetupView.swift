@@ -11,7 +11,7 @@ struct GameSetupView: View {
     @ObservedObject var game: MafiaGame
     
     var body: some View {
-        VStack {
+        ScrollView {
             Text("Game Setup")
                 .font(.title)
             

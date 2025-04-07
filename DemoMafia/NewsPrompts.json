@@ -1,2 +1,9 @@
-
-"Attention citizens, this is the police. Intel leads us to suspect there may be a mafia among your folk. However, we do not have the manpower to help, you are on your own."
+{
+  "gameStart": [
+    "Attention citizens, this is the police. Intel leads us to suspect there may be a mafia among your folk. However, we do not have the manpower to help, you are on your own.",
+    "Citizens, beware. We’ve intercepted communications hinting at a criminal syndicate hiding in plain sight.",
+    "A message from law enforcement: Trust has been broken. Among you hides a shadow. Proceed with caution.",
+    "Good morning, town. All we can say is… trust no one.",
+    "We leave you to your own devices, citizens. The Mafia is among you, and only your wits can save you."
+  ]
+}

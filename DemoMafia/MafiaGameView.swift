@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct MafiaGameView: View {
-    @StateObject var vm : MafiaGame  = MafiaGame()
+    @ObservedObject var vm : MafiaGame
     var body: some View {
         switch vm.state {
         case .setup:
             GameSetupView(game: vm)
         case .playing:
-            Text("\(vm.news)")
+            PlayingView(game: vm)
         case .ended:
             Text("Over")
         }
@@ -22,5 +22,5 @@ struct MafiaGameView: View {
 }
 
 #Preview {
-    MafiaGameView()
+    MafiaGameView(vm: MafiaGame())
 }

@@ -6,6 +6,9 @@
 //
 
 import Foundation
+struct FlavorText: Codable {
+    let gameStart: [String]
+}
 
 struct Player : Identifiable {
     var name : String = ""
@@ -43,7 +46,7 @@ class MafiaGame: ObservableObject {
         }
         
         let roles = gameSetup.generateRoles(for: players.count)
-        
+  
         // Assign each role to a player
         for i in 0..<players.count {
             players[i].role = roles[i]
@@ -63,9 +66,13 @@ class MafiaGame: ObservableObject {
         if players.count < 4 {
             // Show error - not enough players
         } else {
+          
             assignRoles()
             state = .playing
             day = .day
+            if let flavor = loadFlavorText() {
+                news = flavor.gameStart.randomElement() ?? news
+            }
         }
     }
     
