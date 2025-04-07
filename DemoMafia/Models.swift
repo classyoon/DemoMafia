@@ -30,7 +30,7 @@ class MafiaGame: ObservableObject {
     @Published var day: TurnCycle = .day
     @Published var players: [Player] = []
     @Published var gameSetup = GameSetup()
-    
+    @Published var news = "Attention citizens, this is the police. We have recieved intel that leads us to suspect there may be a mafia among your folk. As we do not have the man power to help you, you are on your own."
     func openGame() {
         state = .setup
     }
@@ -48,7 +48,16 @@ class MafiaGame: ObservableObject {
             players[i].role = roles[i]
         }
     }
-    
+    func startNight(){
+        day = .night
+    }
+    func startMorning(){
+        day = .day
+        news = updateNews()
+    }
+    func updateNews()->String{
+        return "Nothing happened tonight"
+    }
     func startGame() {
         if players.count < 4 {
             // Show error - not enough players
@@ -72,7 +81,23 @@ enum GameState : String, Codable {
 enum TurnCycle{
     case day, night
 }
+enum DayDecision {
+    case accuse(UUID), vote(UUID), abstain
+}
+enum DayTime {
+    case special, news(Bool), discussion, accusations, voting, results
+}
 
-enum AppState {
-    case menu, findGame, settings, game(MafiaGame)
+/// Hypothetically this class would come into handy if we start having a bunch of complex rules that can create interlocking actions.
+/// Like say we have vigilante role, who can fire a shot to kill, but if the person they kill isn't a mafia, they take both out.
+/// We have to say somewhere that if a vigilante shoots the mafia at night, and the mafia was going to kill someone, whether
+/// the vigilante kills the mafia before the mafia kills their victim. Maybe we could do that in enums?
+class NightMediator {//Hypothetically.
+    var events : [UUID : NightAction] = [:]
+    func calculate(){
+        /*
+         This I imagine would be where we do all the logic for if like at the very least, if the mafia
+         tries to kill someone but the doctor saves that person.
+         */
+    }
 }

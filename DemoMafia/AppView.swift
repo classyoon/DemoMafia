@@ -41,3 +41,6 @@ class AppStateManager : ObservableObject {
     }
 }
 
+enum AppState {
+    case menu, findGame, settings, game(MafiaGame)
+}

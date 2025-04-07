@@ -14,7 +14,7 @@ struct MafiaGameView: View {
         case .setup:
             GameSetupView(game: vm)
         case .playing:
-            Text("Play")
+            Text("\(vm.news)")
         case .ended:
             Text("Over")
         }
