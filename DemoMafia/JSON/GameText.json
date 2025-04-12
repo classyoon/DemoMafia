@@ -13,6 +13,14 @@
     "Nothing changed",
     "It was an uneventful night"
   ],
+  "night": [
+    "*crickets chirp*",
+    "The stars are beautiful tonight",
+    "*snores",
+    "It's a full moon tonight",
+    "The town is asleep and so should you",
+    "It's night now."
+  ],
   "murder": [
       "Someone died tonight...",
       "Blood was shed",

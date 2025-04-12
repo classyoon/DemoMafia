@@ -13,10 +13,6 @@ struct PlayingView: View {
         switch game.gamephase {
         case .day:
             DayView(game: game)
-        case .intermission(let string):
-            Button("InsertADHere"){
-                
-            }
         case .night:
             NightView(game: game)
         }

@@ -12,6 +12,7 @@ struct NightView: View {
     var body: some View {
         ScrollView {
             Text("NIGHT")
+            Text(game.nightFlavor)
             PeopleListView(people: game.players)
             Button("Move to Day"){
                 game.resolveNight()
