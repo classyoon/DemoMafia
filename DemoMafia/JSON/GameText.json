@@ -16,7 +16,7 @@
   "night": [
     "*crickets chirp*",
     "The stars are beautiful tonight",
-    "*snores",
+    "*snores*",
     "It's a full moon tonight",
     "The town is asleep and so should you",
     "It's night now."
@@ -28,7 +28,6 @@
       "Death had its share",
       "Murder!!!"
   ],
-  //These are messages that will appear during the ads, which may come up after every night unless they pay for them to be removed.
   "admessage" : [
       "Take a break",
       "Here a message from our sponsor",
@@ -36,18 +35,8 @@
       "Check out",
       "These ads make this game free"
   ],
-  /*
-   These are tasks that will allow the roles to disguise their actions. We could also use these to engage the townsfolk. We could also use these as part of a progression.
-   Naturally, we will give a task for the mafia to fake. So the question "what was your task" doesn't doom a new mafia. We could also use these as a means for the mafia to disguise them talking.
-   We could however use these as another source of clues.
-   Unless the tasks are disabled.
-   */
   
   "tasks":[
-//      "Tap on the person whose name is the longest. If there are any ties tap on the person whose name is first.",
-//      "Tap on a dead person, unless nobody is dead, then tap on this to go to sleep",
-//      "Tap on every other person",
-//      "Tap on the person with the shortest name. If there are any ties tap on the person whose name is first.
     "Tap on {{random_player}} to progress the night",
     "Tap on any player to progress the night"
   ]

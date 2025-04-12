@@ -1,48 +1,11 @@
 //
-//  Models.swift
+//  MafiaGame.swift
 //  DemoMafia
 //
-//  Created by Conner Yoon on 4/5/25.
+//  Created by Conner Yoon on 4/12/25.
 //
 
 import Foundation
-
-/*I'm getting a bit lost on player.*/
-struct Player : Identifiable {
-    var name : String = ""
-    var id : UUID = UUID()
-    var role : PlayerRole = .villager
-    var isAlive : Bool = true
-}
-enum NightAction {
-    case kill, save, investigate, nothing
-    
-}
-
-enum PlayerRole: String, Codable {
-    case mafia
-    case detective
-    case villager
-    case doctor
-    
-    func defaultNightAction() -> NightAction {
-        switch self {
-        case .mafia: return .kill
-        case .doctor: return .save
-        case .detective: return .investigate
-        case .villager: return .nothing
-        }
-    }
-}
-struct ChosenNightAction {
-    let actorID: UUID
-    let targetID: UUID?
-    let actionType: NightAction
-}
-struct VoteAction {
-    let actorID: UUID
-    let targetID: UUID?
-}
 class MafiaGame: ObservableObject {
     @Published var state: GameState = .setup
     @Published var gamephase: TurnCycle = .day
@@ -65,9 +28,7 @@ class MafiaGame: ObservableObject {
     func assignRoles() {
         guard gameSetup.isValid(for: players.count) else {
             // Handle invalid setup - too many special roles for player count
-#if DEBUG
             assertionFailure("⚠️ INVALID SET UP")
-#endif
             news = "Something is off with the number of folk here"
             return
         }
@@ -82,9 +43,7 @@ class MafiaGame: ObservableObject {
     func startNight(){
         nightActions = []
         guard let flavor = loadFlavorText() else {
-#if DEBUG
             assertionFailure("Failed to load flavor text")
-#endif
             return
         }
         if let nighttext =  flavor.night.randomElement() {
@@ -112,18 +71,14 @@ class MafiaGame: ObservableObject {
         }else if gamephase == .day {
             guard let livingPlayer = players.first(where: { $0.id == targetID }),
                   livingPlayer.isAlive else {
-#if DEBUG
-                assertionFailure("Someone voted for a dead person somehow")
-#endif
+                assertionFailure("Someone voted for a dead person somehow or nobody is alive")
                 return // invalid or dead
             }
             let chosen = VoteAction(actorID: playerID, targetID: livingPlayer.id)
             votes.removeAll { $0.actorID == playerID }
             votes.append(chosen)
         }else {
-#if DEBUG
-            assertionFailure("Another game phase was added without the proper code")
-#endif
+            fatalError("Another game phase was added without the proper code")
         }
         
     }
@@ -193,19 +148,15 @@ class MafiaGame: ObservableObject {
         ]
         
         guard let defaultText = defaultStatements[lastnight] else {
-#if DEBUG
             assertionFailure("⚠️ No default statement provided for case: \(lastnight)")
-#endif
             news = "The night was unclear..."
             return
         }
-        
         news = defaultText
+        assert(defaultText == "", "EMPTY STRING")
         
         guard let flavor = loadFlavorText() else {
-#if DEBUG
             assertionFailure("Failed to load flavor text")
-#endif
             return
         }
         
@@ -223,7 +174,6 @@ class MafiaGame: ObservableObject {
     func startGame() {
         guard players.count > 3 else {
 #if DEBUG
-            //Cause Error or warning???
             assertionFailure("Start game was triggered when it shouldn't have")
 #endif
             return
@@ -240,7 +190,6 @@ class MafiaGame: ObservableObject {
         state = .ended
     }
 }
-
 
 enum TurnCycle{
     case day, night
