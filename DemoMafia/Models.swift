@@ -8,15 +8,21 @@
 import Foundation
 
 /*I'm getting a bit lost on player.*/
+struct Avatar {
+    var name : String
+    var id : UUID = UUID()
+    var imageURL : String = ""
+}
+
 struct Player : Identifiable {
     var name : String = ""
+    var avatarURL : String = ""
     var id : UUID = UUID()
     var role : PlayerRole = .villager
     var isAlive : Bool = true
 }
 enum NightAction {
-    case kill, save, investigate, nothing
-    
+    case kill, save, investigate, nothing    
 }
 
 enum PlayerRole: String, Codable {

@@ -14,7 +14,6 @@ struct PeopleListView: View {
         {
             ForEach($people) { person in
                 HStack{
-                    Text("Hi")
                     
                 }
                 
