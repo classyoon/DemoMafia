@@ -20,7 +20,7 @@ struct MafiaGameView: View {
         case .playing:
             PlayingView(game: vm)
         case .ended:
-            Text("Over")
+            GameEndView(game: vm)
         }
     }
 }

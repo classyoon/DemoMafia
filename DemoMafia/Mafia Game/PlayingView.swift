@@ -11,6 +11,8 @@ struct PlayingView: View {
     @ObservedObject var game: MafiaGame
     var body: some View {
         switch game.gamephase {
+        case .roleReveal:
+            RoleRevealView(game: game)
         case .day:
             DayView(game: game)
         case .night:

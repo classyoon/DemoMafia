@@ -44,4 +44,11 @@ struct VoteAction {
     let targetID: UUID?
 }
 
-
+struct InvestigationResult: Identifiable {
+    let id = UUID()
+    let detectiveID: UUID
+    let targetID: UUID
+    let targetName: String
+    let isMafia: Bool
+    let nightNumber: Int
+}
