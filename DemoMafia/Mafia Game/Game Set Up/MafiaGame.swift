@@ -246,8 +246,7 @@ class MafiaGame: ObservableObject {
             return
         }
         news = defaultText
-        assert(defaultText == "", "EMPTY STRING")
-        
+
         guard let flavor = loadFlavorText() else {
             assertionFailure("Failed to load flavor text")
             return
