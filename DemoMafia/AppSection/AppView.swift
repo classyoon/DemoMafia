@@ -13,9 +13,27 @@ struct AppView : View {
         case .menu:
             MenuView(vm: vm)
         case .findGame:
-            Text("Find game - Set up a game or find a game?")//When online
+            PlaceholderView(
+                title: "Find Game",
+                description: "Online matchmaking isn’t wired up yet.",
+                missingItems: [
+                    "Networked lobby and matchmaking",
+                    "Invite/link sharing",
+                    "Online game state sync"
+                ],
+                onBack: { vm.state = .menu }
+            )
         case .settings:
-            Text("User Settings")//When applicable
+            PlaceholderView(
+                title: "Settings",
+                description: "Settings are planned but not implemented yet.",
+                missingItems: [
+                    "Audio/visual preferences",
+                    "Accessibility options",
+                    "Saved profile or player presets"
+                ],
+                onBack: { vm.state = .menu }
+            )
         case .game(let mafiaGame):
             MafiaGameView(vm: mafiaGame)
         }
@@ -36,8 +54,11 @@ class AppStateManager : ObservableObject {
         newGame.openGame()
         state = .game(newGame)
     }
+    func enterFindGame() {
+        state = .findGame
+    }
     func enterSettings(){
-     //I can't think of settings yet.
+        state = .settings
     }
     init(state: AppState = .menu) {
         self.state = state
