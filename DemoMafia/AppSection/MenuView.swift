@@ -15,7 +15,13 @@ struct MenuView: View {
                 .font(.system(size: 40, weight: .bold, design: .default))
             Text(vm.fun.description)
             Button("PLAY"){
-                vm.state = AppState.game(MafiaGame())
+                vm.makeGame()
+            }
+            Button("FIND GAME") {
+                vm.enterFindGame()
+            }
+            Button("SETTINGS") {
+                vm.enterSettings()
             }
             Text(vm.tip.description)
             Button("Reroll"){
