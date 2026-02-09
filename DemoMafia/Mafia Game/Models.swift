@@ -7,7 +7,6 @@
 
 import Foundation
 
-/*I'm getting a bit lost on player.*/
 struct Player : Identifiable {
     var name : String = ""
     var id : UUID = UUID()

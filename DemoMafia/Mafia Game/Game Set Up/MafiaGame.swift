@@ -39,7 +39,12 @@ class MafiaGame: ObservableObject {
         }
         
         let roles = gameSetup.generateRoles(for: players.count)
-        
+
+        guard roles.count == players.count else {
+            assertionFailure("Role count mismatch: \(roles.count) roles for \(players.count) players")
+            return
+        }
+
         // Assign each role to a player
         for i in 0..<players.count {
             players[i].role = roles[i]
@@ -49,12 +54,13 @@ class MafiaGame: ObservableObject {
         nightActions = []
         currentActorIndex = 0
         selectedTargetID = nil
-        guard let flavor = loadFlavorText() else {
-            assertionFailure("Failed to load flavor text")
-            return
-        }
-        if let nighttext =  flavor.night.randomElement() {
+        if let flavor = loadFlavorText(), let nighttext = flavor.night.randomElement() {
             nightFlavor = nighttext
+        } else {
+            nightFlavor = "The night falls over the town..."
+            #if DEBUG
+            assertionFailure("Failed to load flavor text")
+            #endif
         }
         lastnight = .nothing
         gamephase = .night
@@ -67,9 +73,10 @@ class MafiaGame: ObservableObject {
             guard currentActorIndex < alivePlayers.count else { return nil }
             return alivePlayers[currentActorIndex]
         } else {
-            // During night, all players act (including dead ones who do nothing)
-            guard currentActorIndex < players.count else { return nil }
-            return players[currentActorIndex]
+            // During night, only alive players act
+            let alivePlayers = players.filter { $0.isAlive }
+            guard currentActorIndex < alivePlayers.count else { return nil }
+            return alivePlayers[currentActorIndex]
         }
     }
 
@@ -85,7 +92,7 @@ class MafiaGame: ObservableObject {
     }
 
     var allPlayersActed: Bool {
-        return currentActorIndex >= players.count
+        return currentActorIndex >= players.filter({ $0.isAlive }).count
     }
     func startMorning(){
         gamephase = .day
@@ -192,7 +199,7 @@ class MafiaGame: ObservableObject {
     }
     func tallyVotes() {
         let aliveCount = players.filter { $0.isAlive }.count
-        let executeNumber = aliveCount / 2 // Use only alive players for threshold
+        let executeNumber = (aliveCount / 2) + 1 // Majority threshold
         var voteCount: [UUID: Int] = [:] // Dictionary to count votes per player
 
         // Count the votes

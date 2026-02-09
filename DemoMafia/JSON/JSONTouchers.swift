@@ -47,6 +47,7 @@ struct GameText: Codable {
     let murder : [String]
     let night : [String]
     let tasks : [String]
+    let admessage : [String]
 }
 func loadAppText() -> AppText? {
     do {
@@ -64,7 +65,9 @@ func loadAppText() -> AppText? {
         return try JSONDecoder().decode(AppText.self, from: data)
 
     } catch {
+        #if DEBUG
         print("⚠️ AppText loading failed with error: \(error)")
+        #endif
         return nil
     }
 }
