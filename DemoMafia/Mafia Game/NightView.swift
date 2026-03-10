@@ -9,54 +9,57 @@ import SwiftUI
 
 struct NightView: View {
     @ObservedObject var game: MafiaGame
+    @ScaledMetric(relativeTo: .largeTitle) private var titleSize: CGFloat = 38
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                // Header
-                Text("NIGHT \(game.dayNum)")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
+        ZStack {
+            MafiaUI.Gradients.night
+            .ignoresSafeArea()
 
-                Text(game.nightFlavor)
-                    .font(.body)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
-
-                Divider()
-
-                if game.allPlayersActed {
-                    // All players have acted - show resolve button
-                    VStack(spacing: 16) {
-                        Text("All players have submitted their actions")
-                            .font(.headline)
-
-                        Button(action: {
-                            game.resolveNight()
-                        }) {
-                            Text("Resolve Night")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color.blue)
-                                .cornerRadius(10)
-                        }
-                        .padding(.horizontal)
+            ScrollView {
+                VStack(spacing: 20) {
+                    if !game.gameTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        Text(game.gameTitle)
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundColor(MafiaUI.Colors.textMuted)
                     }
-                } else if let currentPlayer = game.getCurrentActor() {
-                    // Show current player's action UI
-                    PlayerNightActionView(
-                        game: game,
-                        player: currentPlayer
-                    )
-                } else {
-                    Text("Error: No current player")
-                        .foregroundColor(.red)
+
+                    Text("NIGHT \(game.dayNum)")
+                        .kerning(7)
+                        .font(.system(size: titleSize, weight: .black, design: .rounded))
+                        .foregroundColor(.white)
+
+                    Text(game.nightFlavor)
+                        .font(.body)
+                        .foregroundColor(MafiaUI.Colors.textSecondary)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity)
+                        .mafiaCard()
+
+                    if game.allPlayersActed {
+                        VStack(spacing: 14) {
+                            Text("All players have submitted their actions")
+                                .font(.headline)
+                                .foregroundColor(.white.opacity(0.92))
+
+                            Button("Resolve Night") {
+                                game.resolveNight()
+                            }
+                            .buttonStyle(MafiaPrimaryButtonStyle(fill: .blue))
+                            .accessibilityIdentifier("night.resolveButton")
+                        }
+                    } else if let currentPlayer = game.getCurrentActor() {
+                        PlayerNightActionView(
+                            game: game,
+                            player: currentPlayer
+                        )
+                    } else {
+                        Text("Error: No current player")
+                            .foregroundColor(.red)
+                    }
                 }
+                .mafiaContentFrame()
             }
-            .padding()
         }
     }
 }
@@ -67,34 +70,34 @@ struct PlayerNightActionView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            // Current player indicator
             VStack(spacing: 8) {
-                Text("Current Player")
+                Text("Current Player".uppercased())
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(MafiaUI.Colors.textMuted)
 
                 Text(player.name)
                     .font(.title)
                     .fontWeight(.bold)
+                    .foregroundColor(.white)
 
                 RoleIndicatorView(role: player.role)
             }
             .padding()
             .frame(maxWidth: .infinity)
-            .background(Color.blue.opacity(0.1))
+            .background(.white.opacity(0.1))
             .cornerRadius(12)
 
-            // Action instructions
             Text(actionInstructions(for: player.role))
                 .font(.body)
+                .foregroundColor(MafiaUI.Colors.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
 
-            // Target selection
             if player.role != .villager {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Select Target:")
                         .font(.headline)
+                        .foregroundColor(.white)
 
                     PeopleListView(
                         people: eligibleTargets,
@@ -107,31 +110,25 @@ struct PlayerNightActionView: View {
                 }
             }
 
-            // Submit button
-            Button(action: {
+            Button {
                 game.submitNightAction()
-            }) {
-                Text(submitButtonText(for: player.role))
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(canSubmit ? Color.green : Color.gray)
-                    .cornerRadius(10)
             }
+            label: {
+                Text(submitButtonText(for: player.role))
+            }
+            .buttonStyle(MafiaPrimaryButtonStyle(fill: canSubmit ? .green : .gray))
             .disabled(!canSubmit)
-            .padding(.horizontal)
+            .accessibilityIdentifier("night.submitActionButton")
         }
     }
 
     var eligibleTargets: [Player] {
-        // Filter out the current player from their own target list
         return game.players.filter { $0.id != player.id }
     }
 
     var canSubmit: Bool {
         if player.role == .villager {
-            return true // Villagers can always submit (no action)
+            return true
         }
         return game.selectedTargetID != nil
     }
@@ -163,16 +160,20 @@ struct RoleIndicatorView: View {
     var body: some View {
         HStack {
             Image(systemName: roleIcon)
-                .foregroundColor(roleColor)
+                .foregroundColor(.white)
 
             Text(role.rawValue.capitalized)
                 .font(.headline)
-                .foregroundColor(roleColor)
+                .foregroundColor(.white)
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 6)
-        .background(roleColor.opacity(0.2))
+        .background(roleBadgeColor)
         .cornerRadius(8)
+        .overlay(
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .stroke(.white.opacity(0.28), lineWidth: 1)
+        )
     }
 
     var roleIcon: String {
@@ -184,16 +185,19 @@ struct RoleIndicatorView: View {
         }
     }
 
-    var roleColor: Color {
+    var roleBadgeColor: Color {
         switch role {
-        case .mafia: return .red
-        case .doctor: return .green
-        case .detective: return .blue
-        case .villager: return .gray
+        case .mafia: return Color(red: 0.82, green: 0.10, blue: 0.16)
+        case .doctor: return Color(red: 0.05, green: 0.52, blue: 0.33)
+        case .detective: return Color(red: 0.08, green: 0.40, blue: 0.82)
+        case .villager: return Color(red: 0.34, green: 0.36, blue: 0.40)
         }
     }
 }
 
-#Preview {
+struct NightView_Previews: PreviewProvider {
+    static var previews: some View {
     NightView(game: MafiaGame())
+
+    }
 }

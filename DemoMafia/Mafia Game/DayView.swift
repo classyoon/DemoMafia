@@ -9,32 +9,43 @@ import SwiftUI
 
 struct DayView: View {
     @ObservedObject var game: MafiaGame
+    @ScaledMetric(relativeTo: .largeTitle) private var titleSize: CGFloat = 38
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                // Header
-                Text("DAY \(game.dayNum)")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
+        ZStack {
+            MafiaUI.Gradients.day
+            .ignoresSafeArea()
 
-                // Show different content based on day phase
-                switch game.dayPhase {
-                case .news:
-                    NewsPhaseView(game: game)
-                case .detectiveReport:
-                    DetectiveReportView(game: game)
-                case .discussion:
-                    DiscussionPhaseView(game: game)
-                case .voting:
-                    VotingPhaseView(game: game)
-                case .results:
-                    ResultsPhaseView(game: game)
-                default:
-                    Text("Unknown phase")
+            ScrollView {
+                VStack(spacing: 20) {
+                    if !game.gameTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        Text(game.gameTitle)
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundColor(MafiaUI.Colors.textMuted)
+                    }
+
+                    Text("DAY \(game.dayNum)")
+                        .kerning(6)
+                        .font(.system(size: titleSize, weight: .black, design: .rounded))
+                        .foregroundColor(.white)
+
+                    switch game.dayPhase {
+                    case .news:
+                        NewsPhaseView(game: game)
+                    case .detectiveReport:
+                        DetectiveReportView(game: game)
+                    case .discussion:
+                        DiscussionPhaseView(game: game)
+                    case .voting:
+                        VotingPhaseView(game: game)
+                    case .results:
+                        ResultsPhaseView(game: game)
+                    default:
+                        Text("Unknown phase")
+                    }
                 }
+                .mafiaContentFrame()
             }
-            .padding()
         }
     }
 }
@@ -47,35 +58,26 @@ struct NewsPhaseView: View {
             Text("Morning News")
                 .font(.title2)
                 .fontWeight(.semibold)
+                .foregroundColor(.white)
 
             Text(game.news)
                 .font(.body)
+                .foregroundColor(MafiaUI.Colors.textSecondary)
                 .multilineTextAlignment(.center)
-                .padding()
-                .background(Color.yellow.opacity(0.1))
-                .cornerRadius(8)
-
-            Divider()
+                .mafiaCard(cornerRadius: 8)
 
             Text("Players")
                 .font(.headline)
+                .foregroundColor(.white)
 
             PeopleListView(people: game.players)
 
-            Button(action: {
-                // Check if there are any detectives in the game
+            Button("Continue") {
                 let hasDetectives = game.players.contains { $0.role == .detective }
                 game.dayPhase = hasDetectives ? .detectiveReport : .discussion
-            }) {
-                Text("Continue")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(10)
             }
-            .padding(.horizontal)
+            .buttonStyle(MafiaPrimaryButtonStyle(fill: .blue))
+            .accessibilityIdentifier("day.newsContinueButton")
         }
     }
 }
@@ -88,26 +90,20 @@ struct DiscussionPhaseView: View {
             Text("Discussion Phase")
                 .font(.title2)
                 .fontWeight(.semibold)
+                .foregroundColor(.white)
 
             Text("Discuss among yourselves who might be the Mafia...")
                 .font(.body)
-                .foregroundColor(.secondary)
+                .foregroundColor(MafiaUI.Colors.textSecondary)
                 .multilineTextAlignment(.center)
 
             PeopleListView(people: game.players)
 
-            Button(action: {
+            Button("Begin Voting") {
                 game.startVoting()
-            }) {
-                Text("Begin Voting")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.orange)
-                    .cornerRadius(10)
             }
-            .padding(.horizontal)
+            .buttonStyle(MafiaPrimaryButtonStyle(fill: .orange))
+            .accessibilityIdentifier("day.beginVotingButton")
         }
     }
 }
@@ -118,26 +114,18 @@ struct VotingPhaseView: View {
     var body: some View {
         VStack(spacing: 16) {
             if game.allPlayersVoted {
-                // All players have voted
                 VStack(spacing: 16) {
                     Text("All players have cast their votes")
                         .font(.headline)
+                        .foregroundColor(.white)
 
-                    Button(action: {
+                    Button("Tally Votes") {
                         game.tallyVotes()
-                    }) {
-                        Text("Tally Votes")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.purple)
-                            .cornerRadius(10)
                     }
-                    .padding(.horizontal)
+                    .buttonStyle(MafiaPrimaryButtonStyle(fill: .purple))
+                    .accessibilityIdentifier("day.tallyVotesButton")
                 }
             } else if let currentVoter = game.getCurrentActor() {
-                // Show current voter's UI
                 PlayerVoteView(game: game, voter: currentVoter)
             } else {
                 Text("Error: No current voter")
@@ -153,25 +141,25 @@ struct PlayerVoteView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            // Current voter indicator
             VStack(spacing: 8) {
-                Text("Current Voter")
+                Text("Current Voter".uppercased())
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(MafiaUI.Colors.textMuted)
 
                 Text(voter.name)
                     .font(.title)
                     .fontWeight(.bold)
+                    .foregroundColor(.white)
             }
             .padding()
             .frame(maxWidth: .infinity)
-            .background(Color.orange.opacity(0.1))
+            .background(Color.orange.opacity(0.2))
             .cornerRadius(12)
 
             Text("Who do you want to execute?")
                 .font(.headline)
+                .foregroundColor(.white)
 
-            // Target selection
             PeopleListView(
                 people: eligibleTargets,
                 selectedPlayerID: game.selectedTargetID,
@@ -181,25 +169,16 @@ struct PlayerVoteView: View {
                 showOnlyAlive: true
             )
 
-            // Submit button
-            Button(action: {
+            Button("Cast Vote") {
                 game.submitVote()
-            }) {
-                Text("Cast Vote")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(game.selectedTargetID != nil ? Color.green : Color.gray)
-                    .cornerRadius(10)
             }
+            .buttonStyle(MafiaPrimaryButtonStyle(fill: game.selectedTargetID != nil ? .green : .gray))
             .disabled(game.selectedTargetID == nil)
-            .padding(.horizontal)
+            .accessibilityIdentifier("day.castVoteButton")
         }
     }
 
     var eligibleTargets: [Player] {
-        // Can vote for anyone except yourself
         return game.players.filter { $0.id != voter.id && $0.isAlive }
     }
 }
@@ -212,37 +191,32 @@ struct ResultsPhaseView: View {
             Text("Execution Results")
                 .font(.title2)
                 .fontWeight(.semibold)
+                .foregroundColor(.white)
 
             Text(game.news)
                 .font(.body)
+                .foregroundColor(MafiaUI.Colors.textSecondary)
                 .multilineTextAlignment(.center)
-                .padding()
-                .background(Color.red.opacity(0.1))
-                .cornerRadius(8)
-
-            Divider()
+                .mafiaCard(cornerRadius: 8)
 
             Text("Remaining Players")
                 .font(.headline)
+                .foregroundColor(.white)
 
             PeopleListView(people: game.players)
 
-            Button(action: {
+            Button("Continue to Night") {
                 game.startNight()
-            }) {
-                Text("Continue to Night")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.indigo)
-                    .cornerRadius(10)
             }
-            .padding(.horizontal)
+            .buttonStyle(MafiaPrimaryButtonStyle(fill: .indigo))
+            .accessibilityIdentifier("day.continueToNightButton")
         }
     }
 }
 
-#Preview {
+struct DayView_Previews: PreviewProvider {
+    static var previews: some View {
     DayView(game: MafiaGame())
+
+    }
 }

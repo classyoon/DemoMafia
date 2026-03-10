@@ -21,6 +21,10 @@ struct PlayingView: View {
     }
 }
 
-#Preview {
+struct PlayingView_Previews: PreviewProvider {
+    static var previews: some View {
     PlayingView(game: MafiaGame())
+
+    }
 }
+

@@ -9,81 +9,75 @@ import SwiftUI
 
 struct GameEndView: View {
     @ObservedObject var game: MafiaGame
+    @ScaledMetric(relativeTo: .largeTitle) private var winnerTitleSize: CGFloat = 36
 
     var body: some View {
-        VStack(spacing: 30) {
-            Spacer()
+        ZStack {
+            MafiaUI.Gradients.end
+            .ignoresSafeArea()
 
-            // Victory icon
-            Image(systemName: victoryIcon)
-                .font(.system(size: 80))
-                .foregroundColor(victoryColor)
+            VStack(spacing: 22) {
+                Spacer(minLength: 10)
 
-            // Winner announcement
-            Text(winnerText)
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .multilineTextAlignment(.center)
+                Image(systemName: victoryIcon)
+                    .font(.system(size: 80))
+                    .foregroundColor(victoryColor)
 
-            // Victory message
-            Text(game.victoryMessage)
-                .font(.title3)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
-
-            Divider()
-                .padding(.horizontal)
-
-            // Final player list
-            VStack(spacing: 12) {
-                Text("Final Status")
-                    .font(.headline)
-
-                ForEach(game.players) { player in
-                    HStack {
-                        Circle()
-                            .fill(player.isAlive ? Color.green : Color.red)
-                            .frame(width: 12, height: 12)
-
-                        Text(player.name)
-                            .font(.body)
-
-                        Spacer()
-
-                        RoleIndicatorView(role: player.role)
-                            .scaleEffect(0.8)
-
-                        if !player.isAlive {
-                            Text("Dead")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    .padding(.horizontal)
-                }
-            }
-            .padding()
-            .background(Color.gray.opacity(0.1))
-            .cornerRadius(12)
-            .padding(.horizontal)
-
-            Spacer()
-
-            // Play again button
-            Button(action: {
-                game.openGame()
-            }) {
-                Text("Play Again")
-                    .font(.headline)
+                Text(winnerText)
+                    .font(.system(size: winnerTitleSize, weight: .black, design: .rounded))
                     .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(10)
+                    .multilineTextAlignment(.center)
+
+                Text(game.victoryMessage)
+                    .font(.headline)
+                    .foregroundColor(MafiaUI.Colors.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+
+                VStack(spacing: 10) {
+                    Text("Final Status")
+                        .font(.headline)
+                        .foregroundColor(.white)
+
+                    ForEach(game.players) { player in
+                        HStack {
+                            Circle()
+                                .fill(player.isAlive ? Color.green : Color.red)
+                                .frame(width: 10, height: 10)
+
+                            Text(player.name)
+                                .font(.body.weight(.semibold))
+                                .foregroundColor(.white)
+
+                            Spacer()
+
+                            RoleIndicatorView(role: player.role)
+                                .scaleEffect(0.8)
+
+                            if !player.isAlive {
+                                Text("Dead")
+                                    .font(.caption)
+                                    .foregroundColor(.white.opacity(0.7))
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                }
+                .mafiaCard(fill: MafiaUI.Colors.cardFillSoft, stroke: MafiaUI.Colors.cardStroke, cornerRadius: 16)
+                .padding(.horizontal)
+
+                Spacer()
+
+                Button("Play Again") {
+                    game.openGame()
+                }
+                .buttonStyle(MafiaPrimaryButtonStyle(fill: .blue, font: .headline.weight(.black)))
+                .padding(.horizontal)
+                .accessibilityIdentifier("end.playAgainButton")
             }
-            .padding(.horizontal)
+            .frame(maxWidth: 560)
+            .padding(.vertical, 20)
         }
-        .padding()
     }
 
     var victoryIcon: String {
@@ -129,6 +123,10 @@ struct GameEndView: View {
     }
 }
 
-#Preview {
+struct GameEndView_Previews: PreviewProvider {
+    static var previews: some View {
     GameEndView(game: MafiaGame())
+
+    }
 }
+

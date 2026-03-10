@@ -6,32 +6,44 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		CA3574E52DA41C1700DC0DF4 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = CA3574E42DA41C1700DC0DF4 /* .gitignore */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXContainerItemProxy section */
 		CA1CA5542DA1B73A00FDC172 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CA1CA53D2DA1B73800FDC172 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = CA1CA5442DA1B73800FDC172;
-			remoteInfo = DemoMafia;
+			remoteInfo = MafiaParty;
 		};
 		CA1CA55E2DA1B73A00FDC172 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CA1CA53D2DA1B73800FDC172 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = CA1CA5442DA1B73800FDC172;
-			remoteInfo = DemoMafia;
+			remoteInfo = MafiaParty;
+		};
+		CA92E5CE2F4A6A860010C8BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CA1CA53D2DA1B73800FDC172 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CA92E5BC2F4A6A840010C8BF;
+			remoteInfo = MafiaPartyiOS;
+		};
+		CA92E5D82F4A6A860010C8BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CA1CA53D2DA1B73800FDC172 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CA92E5BC2F4A6A840010C8BF;
+			remoteInfo = MafiaPartyiOS;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		CA1CA5452DA1B73800FDC172 /* DemoMafia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemoMafia.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA1CA5532DA1B73A00FDC172 /* DemoMafiaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoMafiaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA1CA55D2DA1B73A00FDC172 /* DemoMafiaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoMafiaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CA3574E42DA41C1700DC0DF4 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		CA1CA5452DA1B73800FDC172 /* MafiaParty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MafiaParty.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA1CA5532DA1B73A00FDC172 /* MafiaPartyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MafiaPartyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA1CA55D2DA1B73A00FDC172 /* MafiaPartyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MafiaPartyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA92E5BD2F4A6A840010C8BF /* MafiaPartyiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MafiaPartyiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA92E5CD2F4A6A860010C8BF /* MafiaPartyiOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MafiaPartyiOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA92E5D72F4A6A860010C8BF /* MafiaPartyiOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MafiaPartyiOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -48,6 +60,21 @@
 		CA1CA5602DA1B73A00FDC172 /* DemoMafiaUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = DemoMafiaUITests;
+			sourceTree = "<group>";
+		};
+		CA92E5BE2F4A6A840010C8BF /* DemoMafia */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DemoMafia;
+			sourceTree = "<group>";
+		};
+		CA92E5D02F4A6A860010C8BF /* Archive/LegacyTarget-ConnersMafiaIOS/Conners Mafia IOSTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Archive/LegacyTarget-ConnersMafiaIOS/Conners Mafia IOSTests";
+			sourceTree = "<group>";
+		};
+		CA92E5DA2F4A6A860010C8BF /* Archive/LegacyTarget-ConnersMafiaIOS/Conners Mafia IOSUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Archive/LegacyTarget-ConnersMafiaIOS/Conners Mafia IOSUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -74,16 +101,39 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CA92E5BA2F4A6A840010C8BF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA92E5CA2F4A6A860010C8BF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA92E5D42F4A6A860010C8BF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		CA1CA53C2DA1B73800FDC172 = {
 			isa = PBXGroup;
 			children = (
-				CA3574E42DA41C1700DC0DF4 /* .gitignore */,
 				CA1CA5472DA1B73800FDC172 /* DemoMafia */,
 				CA1CA5562DA1B73A00FDC172 /* DemoMafiaTests */,
 				CA1CA5602DA1B73A00FDC172 /* DemoMafiaUITests */,
+				CA92E5BE2F4A6A840010C8BF /* DemoMafia */,
+				CA92E5D02F4A6A860010C8BF /* Archive/LegacyTarget-ConnersMafiaIOS/Conners Mafia IOSTests */,
+				CA92E5DA2F4A6A860010C8BF /* Archive/LegacyTarget-ConnersMafiaIOS/Conners Mafia IOSUITests */,
 				CA1CA5462DA1B73800FDC172 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -91,9 +141,12 @@
 		CA1CA5462DA1B73800FDC172 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CA1CA5452DA1B73800FDC172 /* DemoMafia.app */,
-				CA1CA5532DA1B73A00FDC172 /* DemoMafiaTests.xctest */,
-				CA1CA55D2DA1B73A00FDC172 /* DemoMafiaUITests.xctest */,
+				CA1CA5452DA1B73800FDC172 /* MafiaParty.app */,
+				CA1CA5532DA1B73A00FDC172 /* MafiaPartyTests.xctest */,
+				CA1CA55D2DA1B73A00FDC172 /* MafiaPartyUITests.xctest */,
+				CA92E5BD2F4A6A840010C8BF /* MafiaPartyiOS.app */,
+				CA92E5CD2F4A6A860010C8BF /* MafiaPartyiOSTests.xctest */,
+				CA92E5D72F4A6A860010C8BF /* MafiaPartyiOSUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -101,7 +154,7 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		CA1CA5442DA1B73800FDC172 /* DemoMafia */ = {
+		CA1CA5442DA1B73800FDC172 /* MafiaParty */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CA1CA5672DA1B73A00FDC172 /* Build configuration list for PBXNativeTarget "DemoMafia" */;
 			buildPhases = (
@@ -116,14 +169,14 @@
 			fileSystemSynchronizedGroups = (
 				CA1CA5472DA1B73800FDC172 /* DemoMafia */,
 			);
-			name = DemoMafia;
+			name = MafiaParty;
 			packageProductDependencies = (
 			);
-			productName = DemoMafia;
-			productReference = CA1CA5452DA1B73800FDC172 /* DemoMafia.app */;
+			productName = MafiaParty;
+			productReference = CA1CA5452DA1B73800FDC172 /* MafiaParty.app */;
 			productType = "com.apple.product-type.application";
 		};
-		CA1CA5522DA1B73A00FDC172 /* DemoMafiaTests */ = {
+		CA1CA5522DA1B73A00FDC172 /* MafiaPartyTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CA1CA56A2DA1B73A00FDC172 /* Build configuration list for PBXNativeTarget "DemoMafiaTests" */;
 			buildPhases = (
@@ -139,14 +192,14 @@
 			fileSystemSynchronizedGroups = (
 				CA1CA5562DA1B73A00FDC172 /* DemoMafiaTests */,
 			);
-			name = DemoMafiaTests;
+			name = MafiaPartyTests;
 			packageProductDependencies = (
 			);
-			productName = DemoMafiaTests;
-			productReference = CA1CA5532DA1B73A00FDC172 /* DemoMafiaTests.xctest */;
+			productName = MafiaPartyTests;
+			productReference = CA1CA5532DA1B73A00FDC172 /* MafiaPartyTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		CA1CA55C2DA1B73A00FDC172 /* DemoMafiaUITests */ = {
+		CA1CA55C2DA1B73A00FDC172 /* MafiaPartyUITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CA1CA56D2DA1B73A00FDC172 /* Build configuration list for PBXNativeTarget "DemoMafiaUITests" */;
 			buildPhases = (
@@ -162,11 +215,79 @@
 			fileSystemSynchronizedGroups = (
 				CA1CA5602DA1B73A00FDC172 /* DemoMafiaUITests */,
 			);
-			name = DemoMafiaUITests;
+			name = MafiaPartyUITests;
 			packageProductDependencies = (
 			);
-			productName = DemoMafiaUITests;
-			productReference = CA1CA55D2DA1B73A00FDC172 /* DemoMafiaUITests.xctest */;
+			productName = MafiaPartyUITests;
+			productReference = CA1CA55D2DA1B73A00FDC172 /* MafiaPartyUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		CA92E5BC2F4A6A840010C8BF /* MafiaPartyiOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA92E5E62F4A6A860010C8BF /* Build configuration list for PBXNativeTarget "Conners Mafia IOS" */;
+			buildPhases = (
+				CA92E5B92F4A6A840010C8BF /* Sources */,
+				CA92E5BA2F4A6A840010C8BF /* Frameworks */,
+				CA92E5BB2F4A6A840010C8BF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				CA92E5BE2F4A6A840010C8BF /* DemoMafia */,
+			);
+			name = MafiaPartyiOS;
+			packageProductDependencies = (
+			);
+			productName = MafiaPartyiOS;
+			productReference = CA92E5BD2F4A6A840010C8BF /* MafiaPartyiOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CA92E5CC2F4A6A860010C8BF /* MafiaPartyiOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA92E5E72F4A6A860010C8BF /* Build configuration list for PBXNativeTarget "Conners Mafia IOSTests" */;
+			buildPhases = (
+				CA92E5C92F4A6A860010C8BF /* Sources */,
+				CA92E5CA2F4A6A860010C8BF /* Frameworks */,
+				CA92E5CB2F4A6A860010C8BF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CA92E5CF2F4A6A860010C8BF /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CA92E5D02F4A6A860010C8BF /* Archive/LegacyTarget-ConnersMafiaIOS/Conners Mafia IOSTests */,
+			);
+			name = MafiaPartyiOSTests;
+			packageProductDependencies = (
+			);
+			productName = MafiaPartyiOSTests;
+			productReference = CA92E5CD2F4A6A860010C8BF /* MafiaPartyiOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CA92E5D62F4A6A860010C8BF /* MafiaPartyiOSUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA92E5E82F4A6A860010C8BF /* Build configuration list for PBXNativeTarget "Conners Mafia IOSUITests" */;
+			buildPhases = (
+				CA92E5D32F4A6A860010C8BF /* Sources */,
+				CA92E5D42F4A6A860010C8BF /* Frameworks */,
+				CA92E5D52F4A6A860010C8BF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CA92E5D92F4A6A860010C8BF /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CA92E5DA2F4A6A860010C8BF /* Archive/LegacyTarget-ConnersMafiaIOS/Conners Mafia IOSUITests */,
+			);
+			name = MafiaPartyiOSUITests;
+			packageProductDependencies = (
+			);
+			productName = MafiaPartyiOSUITests;
+			productReference = CA92E5D72F4A6A860010C8BF /* MafiaPartyiOSUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -176,7 +297,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1630;
+				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
 					CA1CA5442DA1B73800FDC172 = {
@@ -189,6 +310,17 @@
 					CA1CA55C2DA1B73A00FDC172 = {
 						CreatedOnToolsVersion = 16.3;
 						TestTargetID = CA1CA5442DA1B73800FDC172;
+					};
+					CA92E5BC2F4A6A840010C8BF = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					CA92E5CC2F4A6A860010C8BF = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = CA92E5BC2F4A6A840010C8BF;
+					};
+					CA92E5D62F4A6A860010C8BF = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = CA92E5BC2F4A6A840010C8BF;
 					};
 				};
 			};
@@ -206,9 +338,12 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CA1CA5442DA1B73800FDC172 /* DemoMafia */,
-				CA1CA5522DA1B73A00FDC172 /* DemoMafiaTests */,
-				CA1CA55C2DA1B73A00FDC172 /* DemoMafiaUITests */,
+					CA1CA5442DA1B73800FDC172 /* MafiaParty */,
+					CA1CA5522DA1B73A00FDC172 /* MafiaPartyTests */,
+					CA1CA55C2DA1B73A00FDC172 /* MafiaPartyUITests */,
+					CA92E5BC2F4A6A840010C8BF /* MafiaPartyiOS */,
+					CA92E5CC2F4A6A860010C8BF /* MafiaPartyiOSTests */,
+					CA92E5D62F4A6A860010C8BF /* MafiaPartyiOSUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -218,7 +353,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA3574E52DA41C1700DC0DF4 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +364,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		CA1CA55B2DA1B73A00FDC172 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA92E5BB2F4A6A840010C8BF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA92E5CB2F4A6A860010C8BF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA92E5D52F4A6A860010C8BF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -260,18 +415,49 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CA92E5B92F4A6A840010C8BF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA92E5C92F4A6A860010C8BF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA92E5D32F4A6A860010C8BF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
 		CA1CA5552DA1B73A00FDC172 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CA1CA5442DA1B73800FDC172 /* DemoMafia */;
+			target = CA1CA5442DA1B73800FDC172 /* MafiaParty */;
 			targetProxy = CA1CA5542DA1B73A00FDC172 /* PBXContainerItemProxy */;
 		};
 		CA1CA55F2DA1B73A00FDC172 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CA1CA5442DA1B73800FDC172 /* DemoMafia */;
+			target = CA1CA5442DA1B73800FDC172 /* MafiaParty */;
 			targetProxy = CA1CA55E2DA1B73A00FDC172 /* PBXContainerItemProxy */;
+		};
+		CA92E5CF2F4A6A860010C8BF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA92E5BC2F4A6A840010C8BF /* MafiaPartyiOS */;
+			targetProxy = CA92E5CE2F4A6A860010C8BF /* PBXContainerItemProxy */;
+		};
+		CA92E5D92F4A6A860010C8BF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA92E5BC2F4A6A840010C8BF /* MafiaPartyiOS */;
+			targetProxy = CA92E5D82F4A6A860010C8BF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -408,15 +594,16 @@
 				DEVELOPMENT_TEAM = 83Z22V6XMU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+					GENERATE_INFOPLIST_FILE = YES;
+					INFOPLIST_KEY_CFBundleDisplayName = "Mafia Party";
+					INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.conner.yoon.DemoMafia;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+					PRODUCT_BUNDLE_IDENTIFIER = com.conner.yoon.mafiaparty;
+					PRODUCT_NAME = MafiaParty;
 				REGISTER_APP_GROUPS = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -435,15 +622,16 @@
 				DEVELOPMENT_TEAM = 83Z22V6XMU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+					GENERATE_INFOPLIST_FILE = YES;
+					INFOPLIST_KEY_CFBundleDisplayName = "Mafia Party";
+					INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.conner.yoon.DemoMafia;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+					PRODUCT_BUNDLE_IDENTIFIER = com.conner.yoon.mafiaparty;
+					PRODUCT_NAME = MafiaParty;
 				REGISTER_APP_GROUPS = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -460,11 +648,11 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.3;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.conner.yoon.DemoMafiaTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+					PRODUCT_BUNDLE_IDENTIFIER = com.conner.yoon.mafiaparty.tests;
+					PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DemoMafia.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DemoMafia";
+					TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MafiaParty.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MafiaParty";
 			};
 			name = Debug;
 		};
@@ -478,11 +666,11 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.3;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.conner.yoon.DemoMafiaTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+					PRODUCT_BUNDLE_IDENTIFIER = com.conner.yoon.mafiaparty.tests;
+					PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DemoMafia.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DemoMafia";
+					TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MafiaParty.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MafiaParty";
 			};
 			name = Release;
 		};
@@ -494,11 +682,11 @@
 				DEVELOPMENT_TEAM = 83Z22V6XMU;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.conner.yoon.DemoMafiaUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+					PRODUCT_BUNDLE_IDENTIFIER = com.conner.yoon.mafiaparty.uitests;
+					PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = DemoMafia;
+					TEST_TARGET_NAME = MafiaParty;
 			};
 			name = Debug;
 		};
@@ -510,11 +698,181 @@
 				DEVELOPMENT_TEAM = 83Z22V6XMU;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.conner.yoon.DemoMafiaUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+					PRODUCT_BUNDLE_IDENTIFIER = com.conner.yoon.mafiaparty.uitests;
+					PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_TARGET_NAME = DemoMafia;
+					TEST_TARGET_NAME = MafiaParty;
+			};
+			name = Release;
+		};
+		CA92E5DF2F4A6A860010C8BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+					ENABLE_PREVIEWS = YES;
+					GENERATE_INFOPLIST_FILE = YES;
+					INFOPLIST_KEY_CFBundleDisplayName = "Mafia Party";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MARKETING_VERSION = 1.0;
+					PRODUCT_BUNDLE_IDENTIFIER = com.conner.yoon.mafiaparty.ios;
+					PRODUCT_NAME = MafiaPartyiOS;
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CA92E5E02F4A6A860010C8BF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+					ENABLE_PREVIEWS = YES;
+					GENERATE_INFOPLIST_FILE = YES;
+					INFOPLIST_KEY_CFBundleDisplayName = "Mafia Party";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MARKETING_VERSION = 1.0;
+					PRODUCT_BUNDLE_IDENTIFIER = com.conner.yoon.mafiaparty.ios;
+					PRODUCT_NAME = MafiaPartyiOS;
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CA92E5E12F4A6A860010C8BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+					PRODUCT_BUNDLE_IDENTIFIER = com.conner.yoon.mafiaparty.ios.tests;
+					PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+					TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MafiaPartyiOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MafiaPartyiOS";
+			};
+			name = Debug;
+		};
+		CA92E5E22F4A6A860010C8BF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+					PRODUCT_BUNDLE_IDENTIFIER = com.conner.yoon.mafiaparty.ios.tests;
+					PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+					TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MafiaPartyiOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MafiaPartyiOS";
+			};
+			name = Release;
+		};
+		CA92E5E32F4A6A860010C8BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+					PRODUCT_BUNDLE_IDENTIFIER = com.conner.yoon.mafiaparty.ios.uitests;
+					PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+					TEST_TARGET_NAME = MafiaPartyiOS;
+			};
+			name = Debug;
+		};
+		CA92E5E42F4A6A860010C8BF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+					PRODUCT_BUNDLE_IDENTIFIER = com.conner.yoon.mafiaparty.ios.uitests;
+					PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+					TEST_TARGET_NAME = MafiaPartyiOS;
 			};
 			name = Release;
 		};
@@ -553,6 +911,33 @@
 			buildConfigurations = (
 				CA1CA56E2DA1B73A00FDC172 /* Debug */,
 				CA1CA56F2DA1B73A00FDC172 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CA92E5E62F4A6A860010C8BF /* Build configuration list for PBXNativeTarget "Conners Mafia IOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA92E5DF2F4A6A860010C8BF /* Debug */,
+				CA92E5E02F4A6A860010C8BF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CA92E5E72F4A6A860010C8BF /* Build configuration list for PBXNativeTarget "Conners Mafia IOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA92E5E12F4A6A860010C8BF /* Debug */,
+				CA92E5E22F4A6A860010C8BF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CA92E5E82F4A6A860010C8BF /* Build configuration list for PBXNativeTarget "Conners Mafia IOSUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA92E5E32F4A6A860010C8BF /* Debug */,
+				CA92E5E42F4A6A860010C8BF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

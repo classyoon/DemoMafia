@@ -13,101 +13,99 @@ struct RoleRevealView: View {
     @State private var showRole: Bool = false
 
     var body: some View {
-        VStack(spacing: 30) {
-            Text("Role Assignment")
-                .font(.largeTitle)
-                .fontWeight(.bold)
+        ZStack {
+            MafiaUI.Gradients.night
+                .ignoresSafeArea()
 
-            Spacer()
-
-            if currentPlayerIndex < game.players.count {
-                let player = game.players[currentPlayerIndex]
-
-                if showRole {
-                    // Show the player their role
-                    VStack(spacing: 24) {
-                        Text(player.name)
-                            .font(.title)
-                            .fontWeight(.bold)
-
-                        Text("Your role is:")
-                            .font(.title3)
-                            .foregroundColor(.secondary)
-
-                        RoleIndicatorView(role: player.role)
-                            .scaleEffect(1.5)
-
-                        // Role description
-                        Text(roleDescription(for: player.role))
-                            .font(.body)
-                            .multilineTextAlignment(.center)
-                            .padding()
-                            .background(Color.gray.opacity(0.1))
-                            .cornerRadius(12)
-                            .padding(.horizontal)
-
-                        Spacer()
-
-                        Button(action: {
-                            moveToNextPlayer()
-                        }) {
-                            Text(currentPlayerIndex < game.players.count - 1 ? "Next Player" : "Start Game")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color.green)
-                                .cornerRadius(10)
-                        }
-                        .padding(.horizontal)
+            ScrollView {
+                VStack(spacing: 30) {
+                    if !game.gameTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        Text(game.gameTitle)
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundColor(MafiaUI.Colors.textMuted)
                     }
-                } else {
-                    // Waiting screen - pass device to next player
-                    VStack(spacing: 24) {
-                        Image(systemName: "hand.point.right.fill")
-                            .font(.system(size: 60))
-                            .foregroundColor(.blue)
 
-                        Text("Pass the device to:")
-                            .font(.title3)
-                            .foregroundColor(.secondary)
+                    Text("Role Assignment")
+                        .font(.largeTitle.weight(.bold))
+                        .foregroundColor(MafiaUI.Colors.textPrimary)
+                        .accessibilityIdentifier("roleReveal.title")
 
-                        Text(player.name)
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
+                    Spacer(minLength: 8)
 
-                        Text("When you're ready, tap below to see your role")
-                            .font(.body)
-                            .foregroundColor(.secondary)
-                            .multilineTextAlignment(.center)
+                    if currentPlayerIndex < game.players.count {
+                        let player = game.players[currentPlayerIndex]
 
-                        Spacer()
+                        if showRole {
+                            VStack(spacing: 24) {
+                                Text(player.name)
+                                    .font(.title.weight(.bold))
+                                    .foregroundColor(MafiaUI.Colors.textPrimary)
 
-                        Button(action: {
-                            withAnimation {
-                                showRole = true
+                                Text("Your role is:")
+                                    .font(.title3)
+                                    .foregroundColor(MafiaUI.Colors.textSecondary)
+
+                                RoleIndicatorView(role: player.role)
+                                    .scaleEffect(1.5)
+
+                                Text(roleDescription(for: player.role))
+                                    .font(.body)
+                                    .foregroundColor(MafiaUI.Colors.textSecondary)
+                                    .multilineTextAlignment(.center)
+                                    .mafiaCard(fill: MafiaUI.Colors.cardFill, stroke: MafiaUI.Colors.cardStroke)
+                                    .padding(.horizontal)
+
+                                Button(action: {
+                                    moveToNextPlayer()
+                                }) {
+                                    Text(currentPlayerIndex < game.players.count - 1 ? "Next Player" : "Start Game")
+                                }
+                                .buttonStyle(MafiaPrimaryButtonStyle(fill: .green))
+                                .padding(.horizontal)
+                                .accessibilityIdentifier("roleReveal.nextPlayerButton")
                             }
-                        }) {
-                            Text("Reveal My Role")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color.blue)
-                                .cornerRadius(10)
-                        }
-                        .padding(.horizontal)
-                    }
-                }
-            } else {
-                // All roles revealed, start game
-                Text("All roles assigned!")
-                    .font(.title)
-            }
+                        } else {
+                            VStack(spacing: 24) {
+                                Image(systemName: "hand.point.right.fill")
+                                    .font(.system(size: 60))
+                                    .foregroundColor(.blue)
 
-            Spacer()
+                                Text("Pass the device to:")
+                                    .font(.title3)
+                                    .foregroundColor(MafiaUI.Colors.textSecondary)
+
+                                Text(player.name)
+                                    .font(.largeTitle.weight(.bold))
+                                    .foregroundColor(MafiaUI.Colors.textPrimary)
+
+                                Text("When you're ready, tap below to see your role")
+                                    .font(.body)
+                                    .foregroundColor(MafiaUI.Colors.textSecondary)
+                                    .multilineTextAlignment(.center)
+
+                                Button(action: {
+                                    withAnimation {
+                                        showRole = true
+                                    }
+                                }) {
+                                    Text("Reveal My Role")
+                                }
+                                .buttonStyle(MafiaPrimaryButtonStyle(fill: .blue))
+                                .padding(.horizontal)
+                                .accessibilityIdentifier("roleReveal.revealButton")
+                            }
+                        }
+                    } else {
+                        Text("All roles assigned!")
+                            .font(.title)
+                            .foregroundColor(MafiaUI.Colors.textPrimary)
+                    }
+
+                    Spacer(minLength: 8)
+                }
+                .mafiaContentFrame()
+            }
         }
-        .padding()
     }
 
     private func moveToNextPlayer() {
@@ -135,6 +133,9 @@ struct RoleRevealView: View {
     }
 }
 
-#Preview {
+struct RoleRevealView_Previews: PreviewProvider {
+    static var previews: some View {
     RoleRevealView(game: MafiaGame())
+
+    }
 }

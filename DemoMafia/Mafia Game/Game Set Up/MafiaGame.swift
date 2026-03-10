@@ -6,13 +6,18 @@
 //
 
 import Foundation
+import Combine
 class MafiaGame: ObservableObject {
+    static let minimumPlayers = 4
+    static let defaultNews = "Attention citizens, this is the police. Intel leads us to suspect there may be a mafia among your folk. However, we do not have the manpower to help, you are on your own."
+    static let defaultNightFlavor = "It's night now."
+
     @Published var state: GameState = .setup
     @Published var gamephase: TurnCycle = .day
     @Published var players: [Player] = []
     @Published var gameSetup = GameSetup()
-    @Published var news = "Attention citizens, this is the police. Intel leads us to suspect there may be a mafia among your folk. However, we do not have the manpower to help, you are on your own."
-    @Published var nightFlavor = "It's night now."
+    @Published var news = MafiaGame.defaultNews
+    @Published var nightFlavor = MafiaGame.defaultNightFlavor
     @Published var lastnight : NightResult = .gamestarted
     var nightActions : [ChosenNightAction] = []
     var votes : [VoteAction] = []
@@ -24,26 +29,67 @@ class MafiaGame: ObservableObject {
     @Published var currentActorIndex: Int = 0
     @Published var selectedTargetID: UUID? = nil
     @Published var investigationResults: [InvestigationResult] = []
+    @Published var gameTitle: String = "Mafia Party"
+    @Published var enforceValidSetup: Bool = true
 
     var premium = true
     func openGame() {
+        resetForNewGame()
+        ensureMinimumPlayers()
+    }
+
+    func ensureMinimumPlayers() {
+        guard players.count < Self.minimumPlayers else { return }
+        for index in players.count..<Self.minimumPlayers {
+            players.append(Player(name: "Player \(index + 1)"))
+        }
+    }
+
+    private func resetForNewGame() {
         state = .setup
+        gamephase = .day
+        players = []
+        gameSetup = GameSetup()
+        news = Self.defaultNews
+        nightFlavor = Self.defaultNightFlavor
+        lastnight = .gamestarted
+        nightActions = []
+        votes = []
+        dayNum = 1
+        dayPhase = .news
+        revealExecuted = false
+        winner = nil
+        victoryMessage = ""
+        currentActorIndex = 0
+        selectedTargetID = nil
+        investigationResults = []
+        gameTitle = "Mafia Party"
+        enforceValidSetup = true
     }
     
-    func assignRoles() {
-        guard gameSetup.isValid(for: players.count) else {
+    func autoBalanceSetup() {
+        gameSetup = GameSetup.recommended(for: players.count)
+    }
+
+    private func assignRoles(using setup: GameSetup) -> Bool {
+        guard setup.isValid(for: players.count, enforceBalance: false) else {
             // Handle invalid setup - too many special roles for player count
             assertionFailure("⚠️ INVALID SET UP")
             news = "Something is off with the number of folk here"
-            return
+            return false
         }
         
-        let roles = gameSetup.generateRoles(for: players.count)
+        let roles = setup.generateRoles(for: players.count)
+        guard roles.count == players.count else {
+            assertionFailure("Role generation failed to match player count")
+            return false
+        }
         
         // Assign each role to a player
         for i in 0..<players.count {
             players[i].role = roles[i]
         }
+        return true
     }
     func startNight(){
         nightActions = []
@@ -135,14 +181,15 @@ class MafiaGame: ObservableObject {
             votes.removeAll { $0.actorID == playerID }
             votes.append(chosen)
         }else {
-            fatalError("Another game phase was added without the proper code")
+#if DEBUG
+            assertionFailure("Unhandled gamephase \(gamephase)")
+#endif
+            return
         }
         
     }
     
     func resolveNight() {
-        // Example resolution logic:
-
         // 1) Identify all 'save' actions.
         let saves = nightActions.filter { $0.actionType == .save }
             .compactMap { $0.targetID }
@@ -150,18 +197,25 @@ class MafiaGame: ObservableObject {
         // 2) Identify all 'kill' actions.
         let kills = nightActions.filter { $0.actionType == .kill }
 
+        // Track whether anyone died this night
+        var someoneDied = false
+
         // 3) For each kill, see if the target was saved.
         for killAction in kills {
             guard let targetID = killAction.targetID else { continue }
             // If the target is not in the saved list, kill them
             if !saves.contains(targetID) {
-                // Mark that player as dead
                 if let idx = players.firstIndex(where: { $0.id == targetID }) {
-                    players[idx].isAlive = false
-                    lastnight = .somebodiedied
+                    if players[idx].isAlive {
+                        players[idx].isAlive = false
+                        someoneDied = true
+                    }
                 }
             }
         }
+
+        // Record the night summary outcome
+        lastnight = someoneDied ? .somebodiedied : .nothing
 
         // 4) Process investigations
         let investigations = nightActions.filter { $0.actionType == .investigate }
@@ -264,18 +318,43 @@ class MafiaGame: ObservableObject {
     }
     
     func startGame() {
-        guard players.count > 3 else {
+        ensureMinimumPlayers()
+        normalizePlayerNames()
+        guard players.count >= Self.minimumPlayers else {
 #if DEBUG
             assertionFailure("Start game was triggered when it shouldn't have")
 #endif
             return
         }
-        assignRoles()
+
+        let setupToUse: GameSetup
+        if enforceValidSetup {
+            guard gameSetup.isValid(for: players.count, enforceBalance: true) else {
+                news = "Current role setup is invalid. Try Auto Balance or reduce special roles."
+                return
+            }
+            setupToUse = gameSetup
+        } else {
+            // Keep flexibility while still guaranteeing a playable role distribution.
+            setupToUse = gameSetup.normalized(for: players.count, enforceBalanceLimit: false)
+            gameSetup = setupToUse
+        }
+
+        guard assignRoles(using: setupToUse) else {
+            return
+        }
         state = .playing
         gamephase = .roleReveal
         lastnight = .gamestarted
         updateNews()
 
+    }
+
+    private func normalizePlayerNames() {
+        for index in players.indices {
+            let trimmed = players[index].name.trimmingCharacters(in: .whitespacesAndNewlines)
+            players[index].name = trimmed.isEmpty ? "Player \(index + 1)" : trimmed
+        }
     }
     
     func endGame() {
@@ -301,7 +380,7 @@ class MafiaGame: ObservableObject {
         }
         // If everyone is dead (edge case)
         else if alivePlayers.isEmpty {
-            winner = .none
+            winner = Winner.none
             victoryMessage = "Everyone has perished. There are no winners."
             state = .ended
         }
@@ -316,15 +395,15 @@ class MafiaGame: ObservableObject {
     }
 }
 
-enum TurnCycle{
+enum TurnCycle: Equatable {
     case roleReveal, day, night
 }
-enum NightResult {
+enum NightResult: Equatable {
     case nothing, somebodiedied, gamestarted
 }
-enum DayTime {
+enum DayTime: Equatable {
     case special, news, detectiveReport, discussion, accusations, voting, results
 }
-enum Winner {
+enum Winner: Equatable {
     case mafia, town, none
 }

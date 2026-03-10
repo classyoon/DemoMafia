@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-enum GameState : String, Codable {
+enum GameState : String, Codable, Equatable {
     case setup
     case playing
     case ended
@@ -25,6 +25,10 @@ struct MafiaGameView: View {
     }
 }
 
-#Preview {
+struct MafiaGameView_Previews: PreviewProvider {
+    static var previews: some View {
     MafiaGameView(vm: MafiaGame())
+
+    }
 }
+

@@ -14,16 +14,16 @@ struct InvestigationLogView: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Image(systemName: "magnifyingglass")
-                    .foregroundColor(.blue)
+                    .foregroundColor(.cyan)
                 Text("Detective Investigation Log")
                     .font(.headline)
-                    .foregroundColor(.blue)
+                    .foregroundColor(.cyan)
             }
 
             if results.isEmpty {
                 Text("No investigations yet")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(MafiaUI.Colors.textMuted)
                     .italic()
             } else {
                 ForEach(results) { result in
@@ -31,9 +31,7 @@ struct InvestigationLogView: View {
                 }
             }
         }
-        .padding()
-        .background(Color.blue.opacity(0.1))
-        .cornerRadius(12)
+        .mafiaCard(fill: MafiaUI.Colors.cardFill, stroke: MafiaUI.Colors.cardStroke, cornerRadius: 12)
     }
 }
 
@@ -45,15 +43,17 @@ struct InvestigationResultRow: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Night \(result.nightNumber)")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(MafiaUI.Colors.textMuted)
 
                 HStack {
                     Text(result.targetName)
                         .font(.subheadline)
                         .fontWeight(.semibold)
+                        .foregroundColor(MafiaUI.Colors.textSecondary)
 
                     Text("is")
                         .font(.caption)
+                        .foregroundColor(MafiaUI.Colors.textMuted)
 
                     Text(result.isMafia ? "MAFIA" : "NOT Mafia")
                         .font(.subheadline)
@@ -71,7 +71,8 @@ struct InvestigationResultRow: View {
     }
 }
 
-#Preview {
+struct InvestigationLogView_Previews: PreviewProvider {
+    static var previews: some View {
     InvestigationLogView(results: [
         InvestigationResult(
             detectiveID: UUID(),
@@ -89,4 +90,6 @@ struct InvestigationResultRow: View {
         )
     ])
     .padding()
+
+    }
 }

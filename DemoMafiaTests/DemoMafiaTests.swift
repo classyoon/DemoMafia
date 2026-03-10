@@ -2,82 +2,208 @@
 //  DemoMafiaTests.swift
 //  DemoMafiaTests
 //
-//  Created by Conner Yoon on 4/5/25.
+//  These tests are intentionally focused on game durability:
+//  - bootstrap behavior
+//  - core phase transitions
+//  - vote/night resolution invariants
 //
 
-import Testing
-@testable import DemoMafia
-struct DemoMafiaTests {
+import XCTest
+import Foundation
+@testable import MafiaParty
 
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
-    }
-    @Test func openApp(){
-        var app = AppStateManager()
+final class GameBootstrapTests: XCTestCase {
+
+    func testOpenGameSeedsMinimumAndResets() {
+        let game = MafiaGame()
+        game.players = [Player(name: "A"), Player(name: "B"), Player(name: "C"), Player(name: "D"), Player(name: "E")]
+        game.state = .ended
+        game.gamephase = .night
+        game.dayNum = 7
+        game.dayPhase = .voting
+        game.winner = .mafia
+        game.victoryMessage = "old"
+        game.currentActorIndex = 3
+        game.selectedTargetID = UUID()
+
+        game.openGame()
+
+        XCTAssertEqual(game.state, .setup)
+        XCTAssertEqual(game.gamephase, .day)
+        XCTAssertEqual(game.dayNum, 1)
+        XCTAssertEqual(game.dayPhase, .news)
+        XCTAssertNil(game.winner)
+        XCTAssertTrue(game.victoryMessage.isEmpty)
+        XCTAssertEqual(game.currentActorIndex, 0)
+        XCTAssertNil(game.selectedTargetID)
+        XCTAssertEqual(game.players.count, MafiaGame.minimumPlayers)
+        XCTAssertEqual(game.players.map(\.name), ["Player 1", "Player 2", "Player 3", "Player 4"])
     }
 
+    func testStartGameTransitionsAndAssignsRoles() {
+        let game = MafiaGame()
+        game.openGame()
+
+        game.startGame()
+
+        XCTAssertEqual(game.state, .playing)
+        XCTAssertEqual(game.gamephase, .roleReveal)
+        XCTAssertGreaterThanOrEqual(game.players.count, MafiaGame.minimumPlayers)
+        XCTAssertTrue(game.players.allSatisfy { $0.isAlive })
+
+        let roleCounts = Dictionary(grouping: game.players.map(\.role), by: { $0 }).mapValues { $0.count }
+        XCTAssertEqual(roleCounts[.mafia, default: 0], game.gameSetup.mafiaCount)
+        XCTAssertEqual(roleCounts[.doctor, default: 0], game.gameSetup.doctorCount)
+        XCTAssertEqual(roleCounts[.detective, default: 0], game.gameSetup.detectiveCount)
+    }
 }
 
-// Define tests for the JSON Resource Manager
-@Suite("JSON Resource Tests")
-struct JSONResourceTests {
-    
-    // Test loading valid JSON
-    @Test("FlavorText can be loaded from valid JSON file")
-    func testLoadValidFlavorText() throws {
-        // Arrange & Act
-        let flavorText = try JSONResourceManager.load(GameText.self)
-        
-        // Assert
-        #expect(flavorText.gameStart.count > 0)
-        #expect(flavorText.nothingHappen.count > 0)
-        #expect(flavorText.murder.count > 0)
-        #expect(flavorText.admessage.count > 0)
+final class NightResolutionTests: XCTestCase {
+
+    func testUnsavedTargetDies() {
+        let game = makeDeterministicNightGame()
+        let mafiaID = game.players[0].id
+        let targetID = game.players[3].id
+
+        game.chooseAction(for: mafiaID, targetID: targetID)
+        game.resolveNight()
+
+        XCTAssertFalse(game.players[3].isAlive)
+        XCTAssertEqual(game.dayNum, 2)
+        XCTAssertEqual(game.gamephase, .day)
+        XCTAssertEqual(game.dayPhase, .news)
     }
-    
-    // Test loading valid AppText
-    @Test("AppText can be loaded from valid JSON file")
-    func testLoadValidAppText() throws {
-        // Arrange & Act
-        let appText = try JSONResourceManager.load(AppText.self)
-        
-        // Assert
-        #expect(appText.fun.count > 0)
-        #expect(appText.tips.count > 0)
-        #expect(appText.otherprojects.count > 0)
-        #expect(appText.familyprojects.count > 0)
+
+    func testDoctorSavePreventsKill() {
+        let game = makeDeterministicNightGame()
+        let mafiaID = game.players[0].id
+        let doctorID = game.players[1].id
+        let targetID = game.players[3].id
+
+        game.chooseAction(for: mafiaID, targetID: targetID)
+        game.chooseAction(for: doctorID, targetID: targetID)
+        game.resolveNight()
+
+        XCTAssertTrue(game.players[3].isAlive)
+        XCTAssertEqual(game.lastnight, .nothing)
+        XCTAssertEqual(game.dayNum, 2)
+        XCTAssertEqual(game.gamephase, .day)
     }
-    
-    
-    // Test random selection
-    @Test("FlavorText random selection returns appropriate text for each type",
-          arguments: [NightResult.nothing, NightResult.somebodiedied, NightResult.gamestarted])
-    func testRandomSelection(nightResult: NightResult) throws {
-        // Arrange
-        let flavorText = try JSONResourceManager.load(GameText.self)
-        
-        // Act
-        let randomText = flavorText.random(for: nightResult)
-        
-        // Assert
-        switch nightResult {
-        case .nothing:
-            #expect(flavorText.nothingHappen.contains(randomText) || randomText == "Nothing happened tonight")
-        case .somebodiedied:
-            #expect(flavorText.murder.contains(randomText) || randomText == "Death occurred tonight")
-        case .gamestarted:
-            #expect(flavorText.gameStart.contains(randomText) || randomText == "The game begins")
+
+    private func makeDeterministicNightGame() -> MafiaGame {
+        let game = MafiaGame()
+        game.openGame()
+        game.state = .playing
+        game.gamephase = .night
+        game.dayNum = 1
+
+        game.players[0].role = .mafia
+        game.players[1].role = .doctor
+        game.players[2].role = .detective
+        game.players[3].role = .villager
+        return game
+    }
+}
+
+final class VotingResolutionTests: XCTestCase {
+
+    func testMajorityVoteExecutesTarget() {
+        let game = MafiaGame()
+        game.openGame()
+        game.state = .playing
+        game.gamephase = .day
+        game.dayPhase = .voting
+
+        game.players[0].role = .mafia
+        game.players[1].role = .doctor
+        game.players[2].role = .detective
+        game.players[3].role = .villager
+
+        let targetID = game.players[3].id
+        game.chooseAction(for: game.players[0].id, targetID: targetID)
+        game.chooseAction(for: game.players[1].id, targetID: targetID)
+        game.chooseAction(for: game.players[2].id, targetID: game.players[0].id)
+        game.chooseAction(for: game.players[3].id, targetID: targetID)
+
+        game.tallyVotes()
+
+        XCTAssertFalse(game.players[3].isAlive)
+        XCTAssertTrue(game.dayPhase == .results || game.state == .ended)
+    }
+}
+
+final class AppStateIntegrationTests: XCTestCase {
+
+    func testMakeGameCreatesReadySession() {
+        let appState = AppStateManager()
+        appState.makeGame()
+
+        guard case .game(let game) = appState.state else {
+            XCTFail("Expected app state to transition to `.game`.")
+            return
+        }
+
+        XCTAssertEqual(game.state, .setup)
+        XCTAssertEqual(game.players.count, MafiaGame.minimumPlayers)
+    }
+}
+
+final class SetupValidationTests: XCTestCase {
+
+    func testRecommendedSetupIsValidAcrossTypicalLobbySizes() {
+        // Durability check:
+        // Auto-balance should always produce a playable role layout.
+        for players in 4...12 {
+            let setup = GameSetup.recommended(for: players)
+            XCTAssertTrue(
+                setup.isValid(for: players, enforceBalance: true),
+                "Recommended setup must be valid for \(players) players."
+            )
         }
     }
-    
-    // Test caching
-    @Test("Resource manager caches loaded resources")
-    func testResourceCaching() throws {
-        // Arrange - Load twice
-        let firstLoad = try JSONResourceManager.load(GameText.self)
-        let secondLoad = try JSONResourceManager.load(GameText.self)
-        
-        // Assert - Same instance (reference equality)
-        #expect(ObjectIdentifier(firstLoad) == ObjectIdentifier(secondLoad))
+
+    func testMafiaCapIsEnforcedWhenValidationIsOn() {
+        // Product rule:
+        // "Too many mafia" should be rejected by strict validation.
+        let players = 8
+        let tooManyMafia = GameSetup(mafiaCount: 3, detectiveCount: 1, doctorCount: 1)
+        XCTAssertFalse(tooManyMafia.isValid(for: players, enforceBalance: true))
+        XCTAssertTrue(tooManyMafia.isValid(for: players, enforceBalance: false))
+    }
+
+    func testStartGameAutoNormalizesIfValidationIsDisabled() {
+        // Durability guard:
+        // Even with nonsense input, start should normalize into a playable setup.
+        let game = MafiaGame()
+        game.openGame()
+        game.enforceValidSetup = false
+        game.gameSetup = GameSetup(mafiaCount: 50, detectiveCount: 50, doctorCount: 50)
+
+        game.startGame()
+
+        XCTAssertEqual(game.state, .playing)
+        XCTAssertTrue(game.gameSetup.isValid(for: game.players.count, enforceBalance: false))
+        let roleCounts = Dictionary(grouping: game.players.map(\.role), by: { $0 }).mapValues { $0.count }
+        XCTAssertEqual(roleCounts[.mafia, default: 0], game.gameSetup.mafiaCount)
+        XCTAssertEqual(roleCounts[.doctor, default: 0], game.gameSetup.doctorCount)
+        XCTAssertEqual(roleCounts[.detective, default: 0], game.gameSetup.detectiveCount)
+    }
+
+    func testStartGameNormalizesBlankPlayerNames() {
+        // UX durability:
+        // Blank names should never leak into gameplay.
+        let game = MafiaGame()
+        game.openGame()
+        game.players[0].name = "   "
+        game.players[1].name = ""
+        game.players[2].name = "Alice"
+        game.players[3].name = "  Bob  "
+
+        game.startGame()
+
+        XCTAssertEqual(game.players[0].name, "Player 1")
+        XCTAssertEqual(game.players[1].name, "Player 2")
+        XCTAssertEqual(game.players[2].name, "Alice")
+        XCTAssertEqual(game.players[3].name, "Bob")
     }
 }

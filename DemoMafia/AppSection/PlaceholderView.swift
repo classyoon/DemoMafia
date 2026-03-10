@@ -64,7 +64,8 @@ struct PlaceholderView: View {
     }
 }
 
-#Preview {
+struct PlaceholderView_Previews: PreviewProvider {
+    static var previews: some View {
     PlaceholderView(
         title: "Find Game",
         description: "Online matchmaking isn’t wired up yet.",
@@ -75,4 +76,7 @@ struct PlaceholderView: View {
         ],
         onBack: {}
     )
+
+    }
 }
+

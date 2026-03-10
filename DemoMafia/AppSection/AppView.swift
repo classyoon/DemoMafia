@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 struct AppView : View {
     @StateObject var vm : AppStateManager = AppStateManager()
     var body: some View {
@@ -15,7 +16,7 @@ struct AppView : View {
         case .findGame:
             PlaceholderView(
                 title: "Find Game",
-                description: "Online matchmaking isn’t wired up yet.",
+                description: "Local play is ready. Online matchmaking will ship in a future update.",
                 missingItems: [
                     "Networked lobby and matchmaking",
                     "Invite/link sharing",
@@ -26,7 +27,7 @@ struct AppView : View {
         case .settings:
             PlaceholderView(
                 title: "Settings",
-                description: "Settings are planned but not implemented yet.",
+                description: "Core gameplay is prioritized first. Full settings will be added after game-loop polish.",
                 missingItems: [
                     "Audio/visual preferences",
                     "Accessibility options",
@@ -40,9 +41,13 @@ struct AppView : View {
     }
 }
 
-#Preview {
+struct AppView_Previews: PreviewProvider {
+    static var previews: some View {
     AppView()
+
+    }
 }
+
 
 class AppStateManager : ObservableObject {
     @Published var state : AppState = .menu

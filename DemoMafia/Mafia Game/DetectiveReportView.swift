@@ -28,19 +28,20 @@ struct DetectiveReportView: View {
                     Text("Detective Investigation Reports")
                         .font(.title2)
                         .fontWeight(.bold)
+                        .foregroundColor(MafiaUI.Colors.textPrimary)
 
                     if detectives.isEmpty {
                         Text("No detectives in this game")
-                            .foregroundColor(.secondary)
+                            .foregroundColor(MafiaUI.Colors.textSecondary)
 
                         Button("Continue") {
                             game.dayPhase = .discussion
                         }
-                        .buttonStyle(.borderedProminent)
+                        .buttonStyle(MafiaPrimaryButtonStyle(fill: .blue))
                     } else {
                         Text("Select your detective to view results:")
                             .font(.body)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(MafiaUI.Colors.textSecondary)
 
                         VStack(spacing: 12) {
                             ForEach(detectives) { detective in
@@ -56,17 +57,18 @@ struct DetectiveReportView: View {
 
                                         Text(detective.name)
                                             .font(.headline)
+                                            .foregroundColor(MafiaUI.Colors.textPrimary)
 
                                         Spacer()
 
                                         if !detective.isAlive {
                                             Text("(Dead)")
                                                 .font(.caption)
-                                                .foregroundColor(.secondary)
+                                                .foregroundColor(MafiaUI.Colors.textMuted)
                                         }
                                     }
                                     .padding()
-                                    .background(Color.blue.opacity(0.1))
+                                    .background(MafiaUI.Colors.cardFill)
                                     .cornerRadius(10)
                                 }
                             }
@@ -76,7 +78,7 @@ struct DetectiveReportView: View {
                         Button("Skip Report") {
                             game.dayPhase = .discussion
                         }
-                        .buttonStyle(.bordered)
+                        .buttonStyle(MafiaPrimaryButtonStyle(fill: .indigo))
                     }
                 }
             } else if let detectiveID = selectedDetectiveID {
@@ -87,6 +89,7 @@ struct DetectiveReportView: View {
                             Text("\(detective.name)'s Investigations")
                                 .font(.title2)
                                 .fontWeight(.bold)
+                                .foregroundColor(MafiaUI.Colors.textPrimary)
                         }
 
                         let results = game.getInvestigationResults(for: detectiveID)
@@ -96,7 +99,7 @@ struct DetectiveReportView: View {
                         Button("Continue") {
                             game.dayPhase = .discussion
                         }
-                        .buttonStyle(.borderedProminent)
+                        .buttonStyle(MafiaPrimaryButtonStyle(fill: .blue))
                         .padding()
                     }
                 }
@@ -106,6 +109,9 @@ struct DetectiveReportView: View {
     }
 }
 
-#Preview {
+struct DetectiveReportView_Previews: PreviewProvider {
+    static var previews: some View {
     DetectiveReportView(game: MafiaGame())
+
+    }
 }
